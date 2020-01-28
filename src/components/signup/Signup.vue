@@ -1,34 +1,34 @@
 <template>
     <div id="signup">
-        <form @submit.prevent="sendSignUp" enctype="multipart/form-data">
+        <form @submit.prevent="sendSignUp" id="formPerson" enctype="multipart/form-data">
             <div class="formGroup">
                 <label for="email">
                     Email
-                    <input class="inputText" type="text" v-model="email" name="email">
+                    <input class="inputText" type="text" v-model="data.email" name="email">
                 </label>
             </div>
             <div class="formGroup">
                 <label for="password">
                     Mot de passe
-                    <input class="password" type="text" v-model="password" name="password">
+                    <input class="inputText" type="password" v-model="data.password" name="password">
                 </label>
             </div>
             <div class="formGroup">
                 <label for="lastname">
                     Nom
-                    <input class="inputText" type="text" v-model="lastname" name="lastname">
+                    <input class="inputText" type="text" v-model="data.lastname" name="lastname">
                 </label>
             </div>
             <div class="formGroup">
                 <label for="firstname">
                     Prénom
-                    <input class="inputText" type="text" v-model="firstname" name="firstname">
+                    <input class="inputText" type="text" v-model="data.firstname" name="firstname">
                 </label>
             </div>
             <div class="formGroup">
                 <label for="postPlayer">
                     Genre
-                    <select class="inputSelect"  v-model="genre" name="genre">
+                    <select class="inputSelect"  v-model="data.genre" name="genre">
                         <option value="homme">Homme</option>
                         <option value="femme">Femme</option>
                     </select>
@@ -37,26 +37,27 @@
             <div class="formGroup">
                 <label for="birth">
                     Date de naissance
-                    <input class="inputText" type="date" v-model="birth" name="birth">
+                    <input class="inputText" type="date" v-model="data.birth" name="birth">
                 </label>
             </div>
 
             <div class="formGroup">
                 <label for="image">
                     Photo
-                    <input class="inputFile" type="file" name="image" @change="uploadFile">
+                    <input class="inputFile" ref="file" type="file" name="image" @change="onSelect">
                 </label>
             </div>
             <div class="formGroup">
                 <label for="height">
                     Taille
-                    <input class="inputRange" type="range" v-model="height" name="height">
+                    <input class="inputRange" type="range" min="0" max="250" v-model="data.height" name="height">
+                    <p>{{ data.height / 100 }} m</p>
                 </label>
             </div>
             <div class="formGroup">
                 <label for="postPlayer">
                     Poste
-                    <select class="inputSelect"  v-model="postPlayer" name="postPlayer">
+                    <select class="inputSelect"  v-model="data.postPlayer" name="postPlayer">
                         <option value="R4">Receptionneur Attaquant</option>
                         <option value="central">Central</option>
                         <option value="pointu">Pointu</option>
@@ -68,7 +69,7 @@
             <div class="formGroup">
                 <label for="level">
                     Niveau
-                    <select class="inputSelect"  v-model="level" name="level">
+                    <select class="inputSelect"  v-model="data.level" name="level">
                         <option value="loisir">Loisir</option>
                         <option value="dep">Départemental</option>
                         <option value="reg">Régional</option>
@@ -84,12 +85,12 @@
             <div class="formGroup">
                 <label for="club">
                     Club
-                    <input class="inputText" type="text" v-model="club" name="club">
+                    <input class="inputText" type="text" v-model="data.club" name="club">
                 </label>
             </div>
 
             <div class="formGroup">
-                <button  type="submit">S'inscrire</button>
+                <button  class="submitBtn" type="submit">S'inscrire</button>
             </div>
         </form>
 
@@ -102,27 +103,48 @@
         components: {},
         data() {
             return {
-                firstname: '',
-                lastname: '',
-                email: '',
-                password: '',
-                genre: '',
-                birth: '',
-                image: '',
-                postPlayer: '',
-                club: '',
-                level: '',
-                height: '',
+                data: {
+                    firstname: '',
+                    lastname: '',
+                    email: '',
+                    password: '',
+                    genre: '',
+                    birth: '',
+                    file:'',
+                    postPlayer: '',
+                    club: '',
+                    level: '',
+                    height: 0,
+                },
+
+
             }
         },
 
         methods: {
-            async sendSignUp(event) {
+
+            onSelect() {
+                const file = this.$refs.file.files[0];
+                this.data.file = file;
+
+            },
+            async sendSignUp() {
                 const formData = new FormData();
-                formData.append('file', event)
+                formData.append('firstname', this.data.firstname);
+                formData.append('lastname', this.data.lastname);
+                formData.append('email', this.data.email);
+                formData.append('password', this.data.password);
+                formData.append('genre', this.data.genre);
+                formData.append('birth', this.data.birth);
+                formData.append('file', this.data.file);
+                formData.append('postPlayer', this.data.postPlayer);
+                formData.append('club', this.data.club);
+                formData.append('level', this.data.level);
+                formData.append('height', this.data.height);
                 try {
-                    await axios.post('http://localhost:3000/person');
-                }catch(err) {
+                    await this.$http.post('http://localhost:3000/person', formData);
+                    console.log(this.data.image);
+                } catch(err) {
                     console.log(err)
                 }
 
@@ -135,6 +157,31 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    #signup {
+        form {
+            display: block;
+            margin: 10% auto 0 auto;
+            width: 20%;
 
+            .formGroup {
+                margin-top: 10%;
+
+                input {
+                    display: block;
+                    margin: 5% auto 0 auto;
+                }
+
+                .submitBtn {
+                    margin: 10% auto 0 auto;
+                    font-size: 1vw;
+                }
+
+                .inputText {
+                    width: 100%;
+                    padding: 2% 4%;
+                }
+            }
+        }
+    }
 </style>

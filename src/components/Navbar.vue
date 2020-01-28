@@ -9,7 +9,7 @@
             <div class="containerMenu">
                 <a href="">Trouver un tournois</a>
                 <a href="">Créer un tournois</a>
-                <a href="">Se connecter</a>
+                <router-link to="login">Se connecter</router-link>
                 <router-link to="profil">Mon Profil</router-link>
             </div>
         </div>
