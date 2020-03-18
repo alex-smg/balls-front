@@ -5,13 +5,13 @@
             <div class="formGroup">
                 <label for="email">
                     Email
-                    <input class="inputText" type="text" v-model="email" name="email">
+                    <input class="inputText" type="text" v-model="credential.email" name="email">
                 </label>
             </div>
             <div class="formGroup">
                 <label for="password">
                     Password
-                    <input class="inputText" type="password" v-model="password" name="password" autocomplete="on">
+                    <input class="inputText" type="password" v-model="credential.password" name="password" autocomplete="on">
                 </label>
             </div>
             <div class="formGroup">
@@ -23,33 +23,22 @@
 </template>
 
 <script>
+    import store from '../../store/index';
     export default {
         name: "login",
         components: {},
         data() {
             return {
-                email : '',
-                password: '',
-
+                credential : {
+                    email : '',
+                    password: '',
+                },
             }
         },
         methods : {
-            login : function(e) {
+            login: function (e) {
                 e.preventDefault();
-                this.$http.post('http://localhost:3000/person/login', {
-                    email: this.email,
-                    password: this.password
-                }).then((response) => {
-                    /* eslint-disable */
-                    console.log(response);
-                    if (response.data.isToken) {
-                        localStorage.setItem('token', response.data.token);
-                        localStorage.setItem('isToken', response.data.isToken);
-                        this.$router.push({ name: `profil` });
-                    }
-                }).catch(function (error) {
-                    console.log(error);
-                });
+                store.dispatch('login', this.credential)
             }
         }
     }

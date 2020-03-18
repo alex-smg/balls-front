@@ -21,6 +21,21 @@
   padding: 0;
   margin: 0;
   outline: none;
+  box-sizing: border-box;
 
 }
+
+h1, h2, h3, h4, h5, p, a, button, input {
+  font-family: 'Nunito', sans-serif;
+}
+  .btn-primary {
+      background-color: #294FFF;
+      border-radius: 2em;
+      border: none;
+      color: #FFFFFF;
+      padding: 1% 4%;
+      font-weight: 700;
+      font-size: 16px;
+      width: min-content;
+  }
 </style>

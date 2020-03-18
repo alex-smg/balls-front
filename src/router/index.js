@@ -3,8 +3,12 @@ import VueRouter from 'vue-router'
 import Login from '../components/login/Login.vue'
 import Profil from '../components/profil/Profil.vue'
 import Signup from '../components/signup/Signup.vue'
+import resultTournament from '../components/resultTournament/ResultTournament.vue'
 import auth from '../middleware/auth'
 import log from '../middleware/log'
+import Home from '../views/Home'
+import FirstStepSearch from '../views/FirstStepSearch'
+import CreateTournament from "../views/CreateTournament";
 
 Vue.use(VueRouter);
 
@@ -12,6 +16,12 @@ const routes = [
   {
     path: '/',
     name: 'home',
+    component: Home
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: FirstStepSearch
   },
   {
     path: '/signup',
@@ -22,6 +32,16 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/resultTournament',
+    name: 'resultTournament',
+    component: resultTournament
+  },
+  {
+    path: '/create-tournament',
+    name: 'createTournament',
+    component: CreateTournament
   },
   {
     path: '/profil',
