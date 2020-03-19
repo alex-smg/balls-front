@@ -2,7 +2,9 @@
     <div id="resultTournament">
         <Map :markers="markers"></Map>
         <h3>{{this.dataSearch}}</h3>
-        <li v-for="tournament in result"> {{ tournament.name }} </li>
+        <ul>
+            <li v-for="tournament in result"> {{ tournament.name }} </li>
+        </ul>
     </div>
 </template>
 
@@ -23,28 +25,35 @@
                 markers: []
             }
         },
-        methods:{
-          search: async function (code, activeReg) {
-              try {
-                  const response = await axios.get(`http://localhost:3000/tournament/search/${code}`, {params : {activeReg: activeReg}});
-                  this.result = response.data;
-
-                  response.data.forEach(el => {
-                      if( el.lattitude && el.longitude) {
-                          let position = {
-                              position: {
-                                  lat: el.lattitude,
-                                  lng: el.longitude
-                              }
-                          }
-                          this.markers.push(position);
-                      }
-                  })
-
-              } catch (error) {
-                  console.error(error);
-              }
-          },
+        methods: {
+            search: async function (code, activeReg) {
+                try {
+                    console.log('test')
+                    const response = await axios.get(`http://localhost:3000/tournament/search/${code}`, {
+                        params: {
+                            activeReg: activeReg,
+                        },
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    });
+                    this.result = response.data;
+                    console.log(response);
+                    response.data.forEach(el => {
+                        if (el.lattitude && el.longitude) {
+                            let position = {
+                                position: {
+                                    lat: el.lattitude,
+                                    lng: el.longitude
+                                }
+                            };
+                            this.markers.push(position);
+                        }
+                    })
+                } catch (error) {
+                    console.error(error);
+                }
+            },
         },
         mounted() {
             if (this.$route.params) {

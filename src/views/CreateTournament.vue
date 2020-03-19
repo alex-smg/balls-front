@@ -30,7 +30,7 @@
                         <input class="inputText" type="text"  @keydown="inputChange" v-model="data.searchRegion" id="addressRegion" name="addressRegion">
                         <div class="suggestions">
                             <ul>
-                                <li v-for="result in suggestions"><button @click="selectValue(result.nom, result.code)">{{ result.nom }}</button></li>
+                                <li v-for="result in suggestions"><button @click.prevent="selectValue(result.nom, result.code)">{{ result.nom }}</button></li>
                             </ul>
                         </div>
                     </label>
@@ -218,7 +218,6 @@
             },
 
             inputChange () {
-
                 console.log(this.data.level);
                 if(this.regions.length > 1) {
                     console.log('test2');
@@ -237,7 +236,6 @@
                 this.data.searchRegion = nom;
                 this.data.addressRegion = nom;
                 this.data.codeRegion = codeRegion;
-
             },
 
             onSelect() {

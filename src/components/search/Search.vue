@@ -73,7 +73,7 @@
                             this.suggestions.push(item)
                         }
                     });
-                }else {
+                } else {
                     this.suggestions = [];
                 }
                 // now `items` will be showed in the suggestion list
