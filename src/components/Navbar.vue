@@ -10,8 +10,8 @@
             <div class="containerMenu">
                 <router-link to="search">Trouver un tournois</router-link>
                 <router-link  to="create-tournament">Créer un tournois</router-link>
-                <router-link v-if="token" to="login">Se connecter</router-link>
-                <router-link v-else to="profil">Mon Profil</router-link>
+                <router-link v-if="token"  to="profil">Mon Profil</router-link>
+                <router-link  v-else to="login">Se connecter</router-link>
             </div>
         </div>
     </nav>
@@ -26,9 +26,10 @@
             }
         },
         mounted() {
-            if(localStorage.isToken === true) {
+            if(localStorage.isToken === 'true') {
                 this.token = true
             }
+
         }
     }
 </script>
