@@ -10,8 +10,7 @@
             <div class="containerMenu">
                 <router-link to="search">Trouver un tournois</router-link>
                 <router-link  to="create-tournament">Créer un tournois</router-link>
-                <router-link v-if="token"  to="profil">Mon Profil</router-link>
-                <router-link  v-else to="login">Se connecter</router-link>
+                <router-link  to="profil">Mon Profil</router-link>
             </div>
         </div>
     </nav>
@@ -22,15 +21,8 @@
         name: "Navbar",
         data() {
             return {
-                token: false
             }
         },
-        mounted() {
-            if(localStorage.isToken === 'true') {
-                this.token = true
-            }
-
-        }
     }
 </script>
 

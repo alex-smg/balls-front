@@ -18,34 +18,25 @@ const store = new Vuex.Store({
       club: '',
       firstname: '',
       lastname: '',
+      isToken: false,
     }
   },
   mutations: {
     pushDataUserSession(state, data) {
           state.userSession.email = data.email,
-              state.userSession.image = data.image,
-              state.userSession.height = data.height,
-              state.userSession.birth = data.birth,
-              state.userSession.postPlayer = data.postPlayer,
-              state.userSession.level = data.level,
-              state.userSession.gender = data.gender,
-              state.userSession.club = data.club,
-              state.userSession.firstname = data.firstname,
-              state.userSession.lastname = data.lastname
+          state.userSession.image = data.image,
+          state.userSession.height = data.height,
+          state.userSession.birth = data.birth,
+          state.userSession.postPlayer = data.postPlayer,
+          state.userSession.level = data.level,
+          state.userSession.gender = data.gender,
+          state.userSession.club = data.club,
+          state.userSession.firstname = data.firstname,
+          state.userSession.lastname = data.lastname,
+          state.userSession.isToken = true
     },
     deleteDataUserSession(state) {
-      state.userSession = {
-        email: '',
-            image: '',
-            height: '',
-            birth: '',
-            postPlayer: '',
-            level: '',
-            gender: '',
-            club: '',
-            firstname: '',
-            lastname: '',
-      }
+      state.userSession = {}
     }
   }, actions: {
     login({commit}, credential) {

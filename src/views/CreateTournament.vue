@@ -2,164 +2,170 @@
     <div id="createTournament">
         <form @submit.prevent="CreateTournament" id="formPerson" enctype="multipart/form-data">
 
-            <div class="stepOne">
-            <div class="formGroup">
-                <label for="name">
-                    Nom
-                    <input class="inputText" type="text" v-model="data.name" id="name" name="name">
-                </label>
-            </div>
-            <div class="formGroup">
-                <label for="description">
-                    Description
-                    <textarea class="inputText" type="text" v-model="data.description" id="description" name="description"></textarea>
-                </label>
-            </div>
-            <div class="formGroup">
-                <label for="streetAddress">
-                    Adresse
-                    <input class="inputText" type="text" v-model="data.streetAddress" id="streetAddress" name="streetAddress">
-                </label>
-                <label for="postalCode">
-                    Code Postal
-                    <input class="inputText" type="text" v-model="data.postalCode" id="postalCode" name="postalCode">
-                </label>
-                <div>
-                    <label for="addressRegion">
-                        Région
-                        <input class="inputText" type="text"  @keydown="inputChange" v-model="data.searchRegion" id="addressRegion" name="addressRegion">
-                        <div class="suggestions">
-                            <ul>
-                                <li v-for="result in suggestions"><button @click.prevent="selectValue(result.nom, result.code)">{{ result.nom }}</button></li>
-                            </ul>
-                        </div>
-                    </label>
-                    <label for="addressLocality">
-                        Ville
-                        <input class="inputText" type="text" v-model="data.addressLocality" id="addressLocality" name="addressLocality">
-                    </label>
-                </div>
-            </div>
-            </div>
-            <div class="stepTwo">
-            <div class="formGroup">
-                <label for="date_begin">
-                    Date de début du tournois
-                    <input class="inputText" type="datetime-local" v-model="data.date_begin" id="date_begin" name="date_begin">
-                </label>
-            </div>
-            <div class="formGroup">
-                <label for="date_end">
-                    Date de début du tournois
-                    <input class="inputText" type="datetime-local" v-model="data.date_end" id="date_end" name="date_end">
-                </label>
-            </div>
-            <div class="formGroup">
-                <label for="date_end_inscription">
-                    Date de fin des inscriptions
-                    <input class="inputText" type="datetime-local" v-model="data.date_end_inscription" id="date_end_inscription" name="date_end_inscription">
-                </label>
-            </div>
-            </div>
-            <div class="formGroup">
-                <label for="image">
-                    Image
-                    <input class="inputFile" ref="file" type="file" id="image" name="image" @change="onSelect">
-                </label>
-            </div>
-            <div class="formGroup">
-                <label for="publish">
-                    Publié
-                    <input type="checkbox" id="publish" name="publish">
-                </label>
-            </div>
-            <div class="formGroup">
-                <h4>Genre</h4>
-                <input type="radio" id="male" name="gender" v-model="data.gender" value="Masculin">
-                <label for="male">Masculin</label><br>
-                <input type="radio" id="female" name="gender" v-model="data.gender" value="Feminin">
-                <label for="female">Feminin</label><br>
-                <input type="radio" id="mixte" name="gender" v-model="data.gender" value="Mixte">
-                <label for="mixte">Mixte</label>
-            </div>
-            <div class="formGroup">
-                    <h4>Niveau</h4>
-                <div class="checkbox">
-                    <input type="checkbox" v-model="data.level" value="loisir" id="loisir" name="loisir">
-                    <label>
-                       Loisir
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <input type="checkbox"  v-model="data.level" value="dep" id="dep" name="dep">
-                    <label for="dep">
-                        Départemental
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <input type="checkbox"  v-model="data.level" value="regional" name="reg">
-                    <label for="reg">
-                        Régional
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <input type="checkbox"  v-model="data.level" value="Pré-national" id="preNat" name="preNat">
-                    <label for="preNat">
-                        Pré-National
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <input type="checkbox"  v-model="data.level" value="National 3" id="N3" name="N3">
-                    <label for="N3">
-                        National 3
-                    </label>
-                </div>
-                    <div class="checkbox">
-                        <input type="checkbox" v-model="data.level" value="National 2" id="N2" name="N2">
-                        <label for="N2">
-                            National 2
+            <div v-show="step === 1" class="stepOne">
+                <div class="formGroup">
+                    <div class="formGroup">
+                        <label for="image">
+                            Image
+                            <input class="inputFile" ref="file" type="file" id="image" name="image" @change="onSelect">
                         </label>
                     </div>
-                <div class="checkbox">
-                    <input type="checkbox"  v-model="data.level" value="National 1" id="N1" name="N1">
-                    <label for="N1">
-                        National 1
+                    <label for="name">
+                        Nom
+                        <input class="inputText" type="text" v-model="data.name" id="name" name="name">
                     </label>
                 </div>
-                <div class="checkbox">
-                    <input type="checkbox"  v-model="data.level" value="Pro B" id="proB" name="proB">
-                    <label for="proB">
-                        Pro B
+                <div class="formGroup">
+                    <label for="description">
+                        Description
+                        <textarea class="inputText" type="text" v-model="data.description" id="description" name="description"></textarea>
                     </label>
                 </div>
-                <div class="checkbox">
-                    <input type="checkbox" v-model="data.level" value="Pro A" id="proA" name="proA">
-                    <label for="proA">
-                        Pro A
+                <div class="formGroup">
+                    <label for="streetAddress">
+                        Adresse
+                        <input class="inputText" type="text" v-model="data.streetAddress" id="streetAddress" name="streetAddress">
+                    </label>
+                    <label for="postalCode">
+                        Code Postal
+                        <input class="inputText" type="text" v-model="data.postalCode" id="postalCode" name="postalCode">
+                    </label>
+                    <div>
+                        <label for="addressRegion">
+                            Région
+                            <input class="inputText" type="text"  @keydown="inputChange" v-model="data.searchRegion" id="addressRegion" name="addressRegion">
+                            <div class="suggestions">
+                                <ul>
+                                    <li v-for="result in suggestions"><button @click.prevent="selectValue(result.nom, result.code)">{{ result.nom }}</button></li>
+                                </ul>
+                            </div>
+                        </label>
+                        <label for="addressLocality">
+                            Ville
+                            <input class="inputText" type="text" v-model="data.addressLocality" id="addressLocality" name="addressLocality">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div v-show="step === 2" class="stepTwo">
+                <div class="formGroup">
+                    <label for="date_begin">
+                        Date de début du tournois
+                        <input class="inputText" type="datetime-local" v-model="data.date_begin" id="date_begin" name="date_begin">
+                    </label>
+                </div>
+                <div class="formGroup">
+                    <label for="date_end">
+                        Date de début du tournois
+                        <input class="inputText" type="datetime-local" v-model="data.date_end" id="date_end" name="date_end">
+                    </label>
+                </div>
+                <div class="formGroup">
+                    <label for="date_end_inscription">
+                        Date de fin des inscriptions
+                        <input class="inputText" type="datetime-local" v-model="data.date_end_inscription" id="date_end_inscription" name="date_end_inscription">
+                    </label>
+                </div>
+                <div class="formGroup">
+                    <label for="publish">
+                        Publié
+                        <input type="checkbox" id="publish" name="publish">
                     </label>
                 </div>
             </div>
-            <div class="formGroup">
-                <label for="widthTeam">
-                    Nombre de joueurs par équipe
-                    <input class="inputText" type="number" v-model="data.widthTeam" id="widthTeam" name="widthTeam">
-                </label>
-            </div>
-            <div class="formGroup">
-                <label for="numberTeam">
-                    Nombre d'équipe
-                    <input class="inputText" type="number" v-model="data.numberTeam" id="numberTeam" name="numberTeam">
-                </label>
-            </div>
-            <div class="formGroup">
-                <label for="typeOfHen">
-                    Nombre de poule
-                    <input class="inputText" type="text" v-model="data.typeOfHen" id="typeOfHen" name="typeOfHen">
-                </label>
-            </div>
+            <div v-show="step === 3" class="stepThree">
+                <div class="formGroup">
+                    <h4>Genre</h4>
+                    <input type="radio" id="male" name="gender" v-model="data.gender" value="Masculin">
+                    <label for="male">Masculin</label><br>
+                    <input type="radio" id="female" name="gender" v-model="data.gender" value="Feminin">
+                    <label for="female">Feminin</label><br>
+                    <input type="radio" id="mixte" name="gender" v-model="data.gender" value="Mixte">
+                    <label for="mixte">Mixte</label>
+                </div>
+                <div class="formGroup">
+                        <h4>Niveau</h4>
+                    <div class="checkbox">
+                        <input type="checkbox" v-model="data.level" value="loisir" id="loisir" name="loisir">
+                        <label>
+                           Loisir
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox"  v-model="data.level" value="dep" id="dep" name="dep">
+                        <label for="dep">
+                            Départemental
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox"  v-model="data.level" value="regional" name="reg">
+                        <label for="reg">
+                            Régional
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox"  v-model="data.level" value="Pré-national" id="preNat" name="preNat">
+                        <label for="preNat">
+                            Pré-National
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox"  v-model="data.level" value="National 3" id="N3" name="N3">
+                        <label for="N3">
+                            National 3
+                        </label>
+                    </div>
+                        <div class="checkbox">
+                            <input type="checkbox" v-model="data.level" value="National 2" id="N2" name="N2">
+                            <label for="N2">
+                                National 2
+                            </label>
+                        </div>
+                    <div class="checkbox">
+                        <input type="checkbox"  v-model="data.level" value="National 1" id="N1" name="N1">
+                        <label for="N1">
+                            National 1
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox"  v-model="data.level" value="Pro B" id="proB" name="proB">
+                        <label for="proB">
+                            Pro B
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox" v-model="data.level" value="Pro A" id="proA" name="proA">
+                        <label for="proA">
+                            Pro A
+                        </label>
+                    </div>
+                </div>
+                <div class="formGroup">
+                    <label for="widthTeam">
+                        Nombre de joueurs par équipe
+                        <input class="inputText" type="number" v-model="data.widthTeam" id="widthTeam" name="widthTeam">
+                    </label>
+                </div>
+                <div class="formGroup">
+                    <label for="numberTeam">
+                        Nombre d'équipe
+                        <input class="inputText" type="number" v-model="data.numberTeam" id="numberTeam" name="numberTeam">
+                    </label>
+                </div>
+                <div class="formGroup">
+                    <label for="typeOfHen">
+                        Nombre de poule
+                        <input class="inputText" type="text" v-model="data.typeOfHen" id="typeOfHen" name="typeOfHen">
+                    </label>
+                </div>
 
+                <div class="formGroup">
+                    <button  class="submitBtn" type="submit">Enregistrer</button>
+                </div>
+            </div>
             <div class="formGroup">
-                <button  class="submitBtn" type="submit">Enregistrer</button>
+                <button :disabled="step < 2" @click="prevStep">Précédent</button>
+                <button  :disabled="step > 2" @click="nextStep">Suivant</button>
             </div>
         </form>
 
@@ -196,9 +202,8 @@
                 },
                 regions: [],
                 suggestions: [],
-                searchRegion:''
-
-
+                searchRegion:'',
+                step: 1
             }
         },
 
@@ -207,6 +212,12 @@
         },
 
         methods: {
+            nextStep: function() {
+                this.step = this.step + 1
+            },
+            prevStep: function() {
+                this.step = this.step - 1
+            },
             getRegions: async function () {
                 try {
                     const response = await axios.get('https://geo.api.gouv.fr/regions?fields=nom,code');

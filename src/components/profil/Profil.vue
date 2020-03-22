@@ -2,6 +2,7 @@
     <div>
         <h2>Profil</h2>
         <p>{{this.$store.userSession}}</p>
+
         <button @click="logout">déconnexion</button>
     </div>
 </template>
