@@ -25,7 +25,7 @@
 
 }
 
-h1, h2, h3, h4, h5, p, a, button, input {
+h1, h2, h3, h4, h5, p, a, button, input, label {
   font-family: 'Nunito', sans-serif;
 }
   .btn-primary {

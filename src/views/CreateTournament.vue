@@ -164,8 +164,8 @@
                 </div>
             </div>
             <div class="formGroup">
-                <button :disabled="step < 2" @click="prevStep">Précédent</button>
-                <button  :disabled="step > 2" @click="nextStep">Suivant</button>
+                <button v-show="step < 1" :disabled="step < 2" @click="prevStep">Précédent</button>
+                <button v-show="step < 3" :disabled="step > 2" @click="nextStep">Suivant</button>
             </div>
         </form>
 
