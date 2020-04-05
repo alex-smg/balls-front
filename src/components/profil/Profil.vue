@@ -1,7 +1,7 @@
 <template>
     <div id="profil">
         <!--<h2>Profil</h2>
-        <button @click="openModalTeam" class="btn-primary">Créer une équipe</button>-->
+        <button  class="btn-primary">Créer une équipe</button>-->
         <div class="containerProfile">
             <div class="containerLeft">
                 <div class="containerImg">
@@ -13,7 +13,7 @@
                 <div>
                     <button class="btn-primary">Modifier mon profil</button>
                     <button class="btn-secondary">Créer un tournois</button>
-                    <button class="btn-secondary">Créer une team</button>
+                    <button class="btn-secondary" @click="openModalTeam">Créer une team</button>
 
                     <button @click="logout">déconnexion</button>
                 </div>
