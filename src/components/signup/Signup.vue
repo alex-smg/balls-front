@@ -142,7 +142,7 @@
                 formData.append('level', this.data.level);
                 formData.append('height', this.data.height);
                 try {
-                    await this.$http.post('http://localhost:3000/person', formData);
+                    await this.$http.post(process.env.API + 'person', formData);
                     console.log(this.data.image);
                 } catch(err) {
                     console.log(err)

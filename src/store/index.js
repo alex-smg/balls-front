@@ -49,12 +49,16 @@ const store = new Vuex.Store({
         if (response.data.isToken) {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('isToken', response.data.isToken);
+          localStorage.setItem('idPerson', response.data.payload._id);
           commit('pushDataUserSession', response.data.payload);
           router.push({name: `profil`});
         }
       }).catch(function (error) {
         console.log(error);
       });
+    },
+    populateUserSession({commit}, data) {
+      commit('pushDataUserSession', data);
     },
 
     logout({commit}) {

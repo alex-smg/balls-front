@@ -285,7 +285,7 @@
                     formData.append('typeOfHen', this.data.typeOfHen);
                     formData.append('publish', this.data.publish);
                     try {
-                        await this.$http.post('http://localhost:3000/tournament', formData);
+                        await this.$http.post(process.env.API +'/tournament', formData);
                         console.log(this.data.image);
                     } catch(err) {
                         console.log(err)

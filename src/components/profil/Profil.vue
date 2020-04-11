@@ -61,42 +61,66 @@
 <script>
     import store from '../../store/index';
     import ModalTeam from "../modal/modalteam";
+    import axios from 'axios';
     export default {
         name: "Profil",
         components: {ModalTeam},
         data() {
-            return{
-                modalTeam : false,
+            return {
+                modalTeam: false,
                 currentUser: [],
                 birth: '',
                 age: '',
             }
         },
         methods: {
-            openModalTeam: function() {
+            openModalTeam: function () {
                 this.modalTeam = true
             },
-            closeModalTeam: function() {
-               this.modalTeam = false
+            closeModalTeam: function () {
+                this.modalTeam = false
             },
-            logout: function() {
+            logout: function () {
                 store.dispatch('logout')
             },
-            formatDate: function() {
+            formatDate: function () {
                 this.currentUser = this.$store.state.userSession;
-                if(this.currentUser.birth) {
+                if (this.currentUser.birth) {
                     let birth = new Date(this.currentUser.birth).toLocaleDateString()
                     this.birth = birth;
                     let age = new Date(this.currentUser.birth).getFullYear();
                     let currentYear = new Date().getFullYear();
                     this.age = currentYear - age + 'ans'
                 }
-            }
+            },
+            getPerson: async function (id) {
+                try {
+                    const response = await axios.get(process.env.VUE_APP_API +`/person/${id}`, {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    });
+
+                    console.log(response.data)
+                    store.dispatch('populateUserSession', response.data);
+                    console.log(response)
+                } catch (error) {
+                    console.log(error)
+                }
+
+            },
         },
         mounted() {
-            this.formatDate();
-        }
+            console.log(this.$store.state.userSession)
+            if (this.$store.state.userSession.email === "") {
+                this.getPerson(localStorage.idPerson);
+                this.formatDate();
+            } else {
+                this.formatDate();
+            }
+        },
     }
+
 </script>
 
 <style lang="scss" scoped>

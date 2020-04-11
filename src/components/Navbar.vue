@@ -11,18 +11,33 @@
                 <router-link to="search">Trouver un tournois</router-link>
                 <router-link  to="create-tournament">Créer un tournois</router-link>
                 <router-link  to="profil">Mon Profil</router-link>
+                <router-link  to="profil">{{messages}}</router-link>
             </div>
         </div>
     </nav>
 </template>
 
 <script>
+    import Pusher from 'pusher-js';
+    const pusher = new Pusher(process.env.VUE_APP_KEY, {
+        cluster: process.env.VUE_APP_CLUSTER,
+    });
+
+
     export default {
         name: "Navbar",
         data() {
             return {
+                messages: '',
             }
         },
+        mounted() {
+            var channel = pusher.subscribe('balls-notification');
+            channel.bind('my-event', function(data) {
+                console.log(data);
+                this.messages = JSON.stringify(data);
+            });
+        }
     }
 </script>
 

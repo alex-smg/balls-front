@@ -6,8 +6,7 @@ import store from './store'
 import axios from 'axios'
 import * as VueGoogleMaps from 'vue2-google-maps'
 
-
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 Vue.prototype.$http = axios;
 

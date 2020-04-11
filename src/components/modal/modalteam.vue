@@ -41,7 +41,8 @@
                     emailPlayer: [
                         {
                             id: 0,
-                            email: ''
+                            email: '',
+                            idPlayer: ''
                         }
                     ],
                 },
@@ -51,13 +52,42 @@
         methods: {
             createTeam: async function () {
                 try {
-                    const response = await this.$http.post('http://localhost:3000/team', this.team);
-                    console.log(response)
+                    const response = await this.$http.post(process.env.VUE_APP_API +'/team', this.team);
+                    console.log(response);
+                    let idTeam = response.data;
+                    this.team.emailPlayer.forEach( async (player) => {
+                        const response = await this.$http.get(process.env.VUE_APP_API + '/person/search/email',
+                            {
+                                params: {email: player.email },
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                }
+                            }
+                        );
+                        console.log(response);
+                        player.idPlayer = response.data;
+                        console.log(player.idPlayer)
+                        this.addRequestTeam(player.idPlayer, idTeam)
+                    })
                 } catch(err) {
                     console.log(err)
                 }
+            },
+            addRequestTeam: async function(idPlayer, id) {
+                try{
+                    let requestTeam = {
+                        idTeam: id,
+                        nameTeam: this.team.name,
+                        idApplicant: localStorage.idPerson,
+                        idPlayer: idPlayer,
+                    };
+                    const response = await this.$http.post(process.env.VUE_APP_API + '/requestTeam', {body: requestTeam})
+                    console.log(response);
+                }
 
-
+                catch(error) {
+                    console.log(error)
+                }
             },
             addEmailPlayer: function () {
                 console.log(this.currentIdPlayer);
@@ -65,7 +95,8 @@
 
                 let newPlayer = {
                     id: this.currentIdPlayer,
-                    email: ''
+                    email: '',
+                    idPlayer: ''
                 };
                 this.team.emailPlayer.push(newPlayer
                 )

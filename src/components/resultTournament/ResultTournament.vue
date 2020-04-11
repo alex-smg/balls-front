@@ -29,7 +29,7 @@
             search: async function (code, activeReg) {
                 try {
                     console.log('test')
-                    const response = await axios.get(`http://localhost:3000/tournament/search/${code}`, {
+                    const response = await axios.get(process.env.API + `/tournament/search/${code}`, {
                         params: {
                             activeReg: activeReg,
                         },
