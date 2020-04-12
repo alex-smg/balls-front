@@ -32,8 +32,11 @@
             }
         },
         mounted() {
-            var channel = pusher.subscribe('balls-notification');
-            channel.bind('my-event', function(data) {
+            let id = JSON.stringify(localStorage.idPerson);
+            console.log(id);
+            console.log(typeof id);
+            var channel = pusher.subscribe('notif');
+            channel.bind(`${id}`, function(data) {
                 console.log(data);
                 this.messages = JSON.stringify(data);
             });

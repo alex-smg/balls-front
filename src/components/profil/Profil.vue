@@ -85,13 +85,11 @@
             },
             formatDate: function () {
                 this.currentUser = this.$store.state.userSession;
-                if (this.currentUser.birth) {
                     let birth = new Date(this.currentUser.birth).toLocaleDateString()
                     this.birth = birth;
                     let age = new Date(this.currentUser.birth).getFullYear();
                     let currentYear = new Date().getFullYear();
-                    this.age = currentYear - age + 'ans'
-                }
+                    this.age = currentYear - age + 'ans';
             },
             getPerson: async function (id) {
                 try {
@@ -103,7 +101,7 @@
 
                     console.log(response.data)
                     store.dispatch('populateUserSession', response.data);
-                    console.log(response)
+                    this.formatDate();
                 } catch (error) {
                     console.log(error)
                 }
@@ -111,13 +109,7 @@
             },
         },
         mounted() {
-            console.log(this.$store.state.userSession)
-            if (this.$store.state.userSession.email === "") {
-                this.getPerson(localStorage.idPerson);
-                this.formatDate();
-            } else {
-                this.formatDate();
-            }
+            this.getPerson(localStorage.idPerson);
         },
     }
 
