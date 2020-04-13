@@ -1,6 +1,6 @@
 <template>
     <div id="createTournament">
-        <form @submit.prevent="CreateTournament" id="formPerson" enctype="multipart/form-data">
+        <form @submit.prevent="sendFile" id="formPerson" enctype="multipart/form-data">
 
             <div v-show="step === 1" class="stepOne">
                 <div class="formGroup">
@@ -164,8 +164,8 @@
                 </div>
             </div>
             <div class="formGroup">
-                <button v-show="step < 1" :disabled="step < 2" @click="prevStep">Précédent</button>
-                <button v-show="step < 3" :disabled="step > 2" @click="nextStep">Suivant</button>
+                <button v-show="step < 1" :disabled="step < 2" @click.prevent="prevStep">Précédent</button>
+                <button v-show="step < 3" :disabled="step > 2" @click.prevent="nextStep">Suivant</button>
             </div>
         </form>
 
@@ -254,46 +254,41 @@
                 this.data.file = file;
             },
 
-            async CreateTournament() {
+            async sendFile() {
+
+                const formData = new FormData();
+                formData.append('file', this.data.file);
+                formData.append('folder', 'tournament');
                 try {
-                    const response = await this.$http.post('https://maps.googleapis.com/maps/api/geocode/json?address='+this.data.streetAddress.replace(/ /g, '') + '+'+ this.data.postalCode.replace(/ /g, '') +'+'+ this.data.addressLocality.replace(/ /g, '') +'+'+ this.data.addressRegion.replace(/ /g, '') +'&key=AIzaSyDavV_kx08t781jo6aZsNC5p9seLH01euQ')
-                    this.data.lattitude = response.data.results[0].geometry.location.lat;
-                    this.data.longitude = response.data.results[0].geometry.location.lng;
-                } catch(err) {
+                    await this.$http.post(process.env.VUE_APP_API + '/file', formData);
+                    this.getPositionMap()
+
+                } catch (err) {
+                    console.log(err)
+                }
+            },
+            getPositionMap: async function() {
+                    try {
+                        const response = await this.$http.post('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.data.streetAddress.replace(/ /g, '') + '+' + this.data.postalCode.replace(/ /g, '') + '+' + this.data.addressLocality.replace(/ /g, '') + '+' + this.data.addressRegion.replace(/ /g, '') + '&key=AIzaSyDavV_kx08t781jo6aZsNC5p9seLH01euQ')
+                        this.data.lattitude = response.data.results[0].geometry.location.lat;
+                        this.data.longitude = response.data.results[0].geometry.location.lng;
+                        if (this.data.lattitude && this.data.longitude) {
+                           this.createTournament()
+                        }
+                    } catch (err) {
+                        console.log(err)
+                    }
+
+            },
+            createTournament: async function() {
+                this.data.level = this.data.level.join(' / ');
+
+                try {
+                    await this.$http.post(process.env.VUE_APP_API + '/tournament', this.data);
+                } catch (err) {
                     console.log(err)
                 }
 
-                if (this.data.lattitude && this.data.longitude) {
-                    let levelsChose = this.data.level.join(' / ');
-                    const formData = new FormData();
-                    formData.append('name', this.data.name);
-                    formData.append('description', this.data.description);
-                    formData.append('addressLocality', this.data.addressLocality);
-                    formData.append('addressRegion', this.data.addressRegion);
-                    formData.append('postalCode', this.data.postalCode);
-                    formData.append('streetAddress', this.data.streetAddress);
-                    formData.append('codeRegion', this.data.codeRegion);
-                    formData.append('lattitude', this.data.lattitude);
-                    formData.append('longitude', this.data.longitude);
-                    formData.append('date_begin', this.data.date_begin);
-                    formData.append('date_end', this.data.date_end);
-                    formData.append('date_end_inscription', this.data.date_end_inscription);
-                    formData.append('file', this.data.file);
-                    formData.append('widthTeam', this.data.widthTeam);
-                    formData.append('numberTeam', this.data.numberTeam);
-                    formData.append('level', levelsChose);
-                    formData.append('typeOfHen', this.data.typeOfHen);
-                    formData.append('publish', this.data.publish);
-                    try {
-                        await this.$http.post(process.env.API +'/tournament', formData);
-                        console.log(this.data.image);
-                    } catch(err) {
-                        console.log(err)
-                    }
-                }
-            },
-            uploadFile(event) {
-                console.log(event)
             }
         }
 
