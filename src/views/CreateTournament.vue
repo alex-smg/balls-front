@@ -91,88 +91,101 @@
 
             <div v-show="step === 3" class="stepThree">
                 <div class="formGroup">
-                    <h4>Genre</h4>
-                    <input type="radio" id="male" name="gender" v-model="data.gender" value="Masculin">
-                    <label for="male">Masculin</label><br>
-                    <input type="radio" id="female" name="gender" v-model="data.gender" value="Feminin">
-                    <label for="female">Feminin</label><br>
-                    <input type="radio" id="mixte" name="gender" v-model="data.gender" value="Mixte">
-                    <label for="mixte">Mixte</label>
-                </div>
-                <div class="formGroup">
-                        <h4>Niveau</h4>
-                    <div class="checkbox">
-                        <input type="checkbox" v-model="data.level" value="loisir" id="loisir" name="loisir">
-                        <label>
-                           Loisir
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <input type="checkbox"  v-model="data.level" value="dep" id="dep" name="dep">
-                        <label for="dep">
-                            Départemental
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <input type="checkbox"  v-model="data.level" value="regional" name="reg">
-                        <label for="reg">
-                            Régional
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <input type="checkbox"  v-model="data.level" value="Pré-national" id="preNat" name="preNat">
-                        <label for="preNat">
-                            Pré-National
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <input type="checkbox"  v-model="data.level" value="National 3" id="N3" name="N3">
-                        <label for="N3">
-                            National 3
-                        </label>
-                    </div>
-                        <div class="checkbox">
-                            <input type="checkbox" v-model="data.level" value="National 2" id="N2" name="N2">
-                            <label for="N2">
-                                National 2
+                    <div class="noFlex">
+                        <h4>Genre</h4>
+                        <div>
+                            <div class="btnRadio">
+                                <input type="radio" id="male" name="gender" v-model="data.gender" value="Masculin">
+                                <label for="male">Masculin</label>
+                            </div>
+                            <div class="btnRadio">
+                                <input type="radio" id="female" name="gender" v-model="data.gender" value="Feminin">
+                                <label for="female">Feminin</label>
+                            </div>
+                            <div class="btnRadio">
+                                <input type="radio" id="mixte" name="gender" v-model="data.gender" value="Mixte">
+                                <label for="mixte">Mixte</label>
+                            </div>
+                        </div>
+                        <div class="number">
+                            <label for="widthTeam">
+                                Nombre de joueurs par équipe
+                                <input class="inputText" type="number" v-model="data.widthTeam" id="widthTeam" name="widthTeam">
+                            </label>
+                            <label for="numberTeam">
+                                Nombre d'équipe
+                                <input class="inputText" type="number" v-model="data.numberTeam" id="numberTeam" name="numberTeam">
+                            </label>
+                            <label for="typeOfHen">
+                                Nombre de poule
+                                <input class="inputText" type="number" v-model="data.typeOfHen" id="typeOfHen" name="typeOfHen">
                             </label>
                         </div>
-                    <div class="checkbox">
-                        <input type="checkbox"  v-model="data.level" value="National 1" id="N1" name="N1">
-                        <label for="N1">
-                            National 1
-                        </label>
+
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox"  v-model="data.level" value="Pro B" id="proB" name="proB">
-                        <label for="proB">
-                            Pro B
-                        </label>
+
+
+                    <div class="noFlex">
+                        <h4>Niveau</h4>
+                        <div class="levelCheckbox">
+                            <div class="checkbox">
+                                <input type="checkbox" v-model="data.level" value="loisir" id="loisir" name="loisir">
+                                <span class="checkmark"></span>
+                                <label>
+                                    Loisir
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox"  v-model="data.level" value="dep" id="dep" name="dep">
+                                <label for="dep">
+                                    Départemental
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox"  v-model="data.level" value="regional" name="reg">
+                                <label for="reg">
+                                    Régional
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox"  v-model="data.level" value="Pré-national" id="preNat" name="preNat">
+                                <label for="preNat">
+                                    Pré-National
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox"  v-model="data.level" value="National 3" id="N3" name="N3">
+                                <label for="N3">
+                                    National 3
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" v-model="data.level" value="National 2" id="N2" name="N2">
+                                <label for="N2">
+                                    National 2
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox"  v-model="data.level" value="National 1" id="N1" name="N1">
+                                <label for="N1">
+                                    National 1
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox"  v-model="data.level" value="Pro B" id="proB" name="proB">
+                                <label for="proB">
+                                    Pro B
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" v-model="data.level" value="Pro A" id="proA" name="proA">
+                                <label for="proA">
+                                    Pro A
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="checkbox">
-                        <input type="checkbox" v-model="data.level" value="Pro A" id="proA" name="proA">
-                        <label for="proA">
-                            Pro A
-                        </label>
-                    </div>
-                </div>
-                <div class="formGroup">
-                    <label for="widthTeam">
-                        Nombre de joueurs par équipe
-                        <input class="inputText" type="number" v-model="data.widthTeam" id="widthTeam" name="widthTeam">
-                    </label>
-                </div>
-                <div class="formGroup">
-                    <label for="numberTeam">
-                        Nombre d'équipe
-                        <input class="inputText" type="number" v-model="data.numberTeam" id="numberTeam" name="numberTeam">
-                    </label>
-                </div>
-                <div class="formGroup">
-                    <label for="typeOfHen">
-                        Nombre de poule
-                        <input class="inputText" type="text" v-model="data.typeOfHen" id="typeOfHen" name="typeOfHen">
-                    </label>
+
                 </div>
             </div>
             <div class="prevNext" :class="step === 1 ? 'flexEnd' : ''">
@@ -212,7 +225,7 @@
                     widthTeam: 0,
                     numberTeam: 0,
                     level: [],
-                    typeOfHen: '',
+                    typeOfHen: 0,
                     lattitude: 0,
                     longitude: 0,
                     publish: false,
@@ -376,6 +389,7 @@
                 align-items: flex-end;
             }
 
+
             .formFlex {
                 label {
                     width: 30%;
@@ -390,13 +404,44 @@
                     width: 100%;
                 }
                 margin-top: 5%;
-                .checkbox {
-                    display: flex;
-                    text-align: left;
-                    input {
-                        margin: 0 20px 0 0px;
+                .noFlex {
+                    width: 45%;
+                    display: block;
+                    h4 {
+                        margin-bottom: 10px;
                     }
+                    .btnRadio{
+                        display: flex;
+                        label {
+                            margin: 5px 0;
+                            width: min-content;
+                        }
+                        input {
+                            margin: auto 10px auto 0;
+                        }
+                    }
+                    .checkbox {
+                        display: flex;
+                        margin: 5px 0 5px 0;
+                        label {
+                            margin: 0 0 0 10px;
+                        }
+                    }
+                    .number {
+                        width: 80%;
+                        margin-top: 10%;
+                        label {
+                            display: flex;
+                            justify-content: space-between;
+                            margin: 10px 0 10px 0;
+                        }
+                        input {
+                            width: 20%;
+                        }
+                    }
+
                 }
+
                 input[type=text], textarea {
                     display: block;
                     margin: 18px auto 0 auto;
