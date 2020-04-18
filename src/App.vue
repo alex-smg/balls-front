@@ -57,6 +57,7 @@
   .formGroup {
     label {
       font-weight: 600;
+      width: 100%;
     }
     input[type=text], textarea {
       width: 100%;

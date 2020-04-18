@@ -65,25 +65,21 @@
 
 
             <div v-show="step === 2" class="stepTwo">
-                <div class="formGroup">
+                <div class="formGroup formFlex">
                     <label for="date_begin">
                         Date de début du tournois
-                        <input class="inputText" type="datetime-local" v-model="data.date_begin" id="date_begin" name="date_begin">
+                        <datetime  type="datetime" hour-step=1 minute-step=1 v-model="data.date_begin"></datetime>
                     </label>
-                </div>
-                <div class="formGroup">
                     <label for="date_end">
                         Date de début du tournois
-                        <input class="inputText" type="datetime-local" v-model="data.date_end" id="date_end" name="date_end">
+                        <datetime  type="datetime" hour-step=1 minute-step=1 v-model="data.date_end"></datetime>
                     </label>
                 </div>
-                <div class="formGroup">
+                <div class="formGroup formFlex">
                     <label for="date_end_inscription">
                         Date de fin des inscriptions
-                        <input class="inputText" type="datetime-local" v-model="data.date_end_inscription" id="date_end_inscription" name="date_end_inscription">
+                        <datetime  type="datetime" hour-step=1 minute-step=1 v-model="data.date_end_inscription"></datetime>
                     </label>
-                </div>
-                <div class="formGroup">
                     <label for="publish">
                         Publié
                         <input type="checkbox" id="publish"  class="tgl tgl-light" name="publish">
@@ -191,10 +187,15 @@
 
 <script>
     import axios from 'axios';
+    import { Datetime } from 'vue-datetime'
+    // You need a specific loader for CSS files
+    import 'vue-datetime/dist/vue-datetime.css'
 
     export default {
         name: "createTournament",
-        components: {},
+        components: {
+            Datetime
+        },
         data() {
             return {
                 data: {
@@ -318,8 +319,9 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     #createTournament {
+
         .background {
             height: 50vh;
             position: absolute;
@@ -374,7 +376,19 @@
                 align-items: flex-end;
             }
 
+            .formFlex {
+                label {
+                    width: 30%;
+                    margin-right: 10%;
+                }
+            }
+
             .formGroup {
+                display: flex;
+                .vdatetime {
+                    margin-top: 18px;
+                    width: 100%;
+                }
                 margin-top: 5%;
                 .checkbox {
                     display: flex;
@@ -383,7 +397,7 @@
                         margin: 0 20px 0 0px;
                     }
                 }
-                input, textarea {
+                input[type=text], textarea {
                     display: block;
                     margin: 18px auto 0 auto;
                 }
