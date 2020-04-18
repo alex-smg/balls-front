@@ -1,52 +1,69 @@
 <template>
     <div id="createTournament">
+        <div class="background"></div>
         <form @submit.prevent="sendFile" id="formPerson" enctype="multipart/form-data">
-
+            <div>
+                <h3>Créer un nouveau tournois</h3>
+            </div>
             <div v-show="step === 1" class="stepOne">
                 <div class="formGroup">
-                    <div class="formGroup">
-                        <label for="image">
-                            Image
-                            <input class="inputFile" ref="file" type="file" id="image" name="image" @change="onSelect">
-                        </label>
+                    <label for="image">
+                        Image
+                        <button class="btn-secondary selectFile" @click.prevent="getFile">Selectionner un ficher</button>
+                        <input class="inputFile" ref="file" type="file" id="image" name="image" @change="onSelect">
+                    </label>
+                </div>
+                <div class="container">
+                    <div class="container-left">
+                        <div class="formGroup name">
+                            <label for="name">
+                                Nom
+                                <input class="inputText" type="text" v-model="data.name" id="name" name="name">
+                            </label>
+                        </div>
+                        <div class="formGroup description">
+                            <label for="description">
+                                Description
+                                <textarea class="inputText" type="text" v-model="data.description" id="description" name="description"></textarea>
+                            </label>
+                        </div>
                     </div>
-                    <label for="name">
-                        Nom
-                        <input class="inputText" type="text" v-model="data.name" id="name" name="name">
-                    </label>
-                </div>
-                <div class="formGroup">
-                    <label for="description">
-                        Description
-                        <textarea class="inputText" type="text" v-model="data.description" id="description" name="description"></textarea>
-                    </label>
-                </div>
-                <div class="formGroup">
-                    <label for="streetAddress">
-                        Adresse
-                        <input class="inputText" type="text" v-model="data.streetAddress" id="streetAddress" name="streetAddress">
-                    </label>
-                    <label for="postalCode">
-                        Code Postal
-                        <input class="inputText" type="text" v-model="data.postalCode" id="postalCode" name="postalCode">
-                    </label>
-                    <div>
-                        <label for="addressRegion">
-                            Région
-                            <input class="inputText" type="text"  @keydown="inputChange" v-model="data.searchRegion" id="addressRegion" name="addressRegion">
-                            <div class="suggestions">
-                                <ul>
-                                    <li v-for="result in suggestions"><button @click.prevent="selectValue(result.nom, result.code)">{{ result.nom }}</button></li>
-                                </ul>
+                    <div class="container-right">
+                        <div class="formGroup">
+                            <label for="streetAddress">
+                                Adresse
+                                <input class="inputText" type="text" v-model="data.streetAddress" id="streetAddress" name="streetAddress">
+                            </label>
+                        </div>
+                        <div class="formGroup postalCode">
+                            <label for="postalCode">
+                                Code Postal
+                                <input class="inputText" type="text" v-model="data.postalCode" id="postalCode" name="postalCode">
+                            </label>
+                        </div>
+                        <div class="formGroup">
+                            <div class="flexreg">
+                                <label for="addressLocality">
+                                    Ville
+                                    <input class="inputText" type="text" v-model="data.addressLocality" id="addressLocality" name="addressLocality">
+                                </label>
+                                <label for="addressRegion">
+                                    Région
+                                    <input class="inputText" type="text"  @keydown="inputChange" v-model="data.searchRegion" id="addressRegion" name="addressRegion">
+                                    <div class="suggestions">
+                                        <ul>
+                                            <li v-for="result in suggestions"><button @click.prevent="selectValue(result.nom, result.code)">{{ result.nom }}</button></li>
+                                        </ul>
+                                    </div>
+                                </label>
+
                             </div>
-                        </label>
-                        <label for="addressLocality">
-                            Ville
-                            <input class="inputText" type="text" v-model="data.addressLocality" id="addressLocality" name="addressLocality">
-                        </label>
+                        </div>
                     </div>
                 </div>
             </div>
+
+
             <div v-show="step === 2" class="stepTwo">
                 <div class="formGroup">
                     <label for="date_begin">
@@ -69,10 +86,13 @@
                 <div class="formGroup">
                     <label for="publish">
                         Publié
-                        <input type="checkbox" id="publish" name="publish">
+                        <input type="checkbox" id="publish"  class="tgl tgl-light" name="publish">
+                        <span class="tgl-btn"></span>
                     </label>
                 </div>
             </div>
+
+
             <div v-show="step === 3" class="stepThree">
                 <div class="formGroup">
                     <h4>Genre</h4>
@@ -158,14 +178,11 @@
                         <input class="inputText" type="text" v-model="data.typeOfHen" id="typeOfHen" name="typeOfHen">
                     </label>
                 </div>
-
-                <div class="formGroup">
-                    <button  class="submitBtn" type="submit">Enregistrer</button>
-                </div>
             </div>
-            <div class="formGroup">
-                <button v-show="step < 1" :disabled="step < 2" @click.prevent="prevStep">Précédent</button>
-                <button v-show="step < 3" :disabled="step > 2" @click.prevent="nextStep">Suivant</button>
+            <div class="prevNext" :class="step === 1 ? 'flexEnd' : ''">
+                <button class="btn-secondary"  v-show="step > 1"  @click.prevent="prevStep">Précédent</button>
+                <button class="btn-secondary" v-show="step < 3" :disabled="step > 2" @click.prevent="nextStep">Suivant</button>
+                <button v-show="step === 3" class="submitBtn btn-primary" type="submit">Enregistrer</button>
             </div>
         </form>
 
@@ -212,8 +229,14 @@
         },
 
         methods: {
+
+            getFile: function () {
+                let select_file = document.querySelector('#image');
+                select_file.focus();
+            },
             nextStep: function() {
-                this.step = this.step + 1
+                this.step = this.step + 1;
+                console.log(this.step)
             },
             prevStep: function() {
                 this.step = this.step - 1
@@ -297,13 +320,62 @@
 
 <style lang="scss" scoped>
     #createTournament {
+        .background {
+            height: 50vh;
+            position: absolute;
+            bottom: 0;
+            width: 100vw;
+            background-color: #FFDF7E;
+            z-index: 0;
+        }
+        h3 {
+            color: #FFCA28;
+        }
         form {
             display: block;
-            margin: 10% auto 0 auto;
-            width: 20%;
+            margin: 5% auto 0 auto;
+            width: 50%;
+            border: 3px solid #FFDF7E;
+            border-radius: 1em;
+            padding: 2% 2%;
+            background-color: #FFFFFF;
+            z-index: 100;
+            position: relative;
+
+            .container {
+                display: flex;
+                justify-content: space-between;
+                .container-left {
+                    width: 48%;
+                }
+                .container-right {
+                    width: 48%;
+                    .flexreg {
+                        display: flex;
+                        justify-content: space-between;
+                        label {
+                            width: 48%;
+                            input {
+                                margin: 18px auto 0 auto;
+                                padding: 8px 15px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .prevNext {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 3vh;
+            }
+            .flexEnd {
+                justify-content: flex-end;
+                align-items: flex-end;
+            }
 
             .formGroup {
-                margin-top: 10%;
+                margin-top: 5%;
                 .checkbox {
                     display: flex;
                     text-align: left;
@@ -311,9 +383,9 @@
                         margin: 0 20px 0 0px;
                     }
                 }
-                input {
+                input, textarea {
                     display: block;
-                    margin: 5% auto 0 auto;
+                    margin: 18px auto 0 auto;
                 }
 
                 .submitBtn {
@@ -323,7 +395,32 @@
 
                 .inputText {
                     width: 100%;
-                    padding: 2% 4%;
+                    padding: 8px 15px;
+                }
+                #image {
+                    position: absolute;
+                    visibility: hidden;
+                    top: 0; left: 0;
+                    width: 225px;
+                    opacity: 0;
+                    padding: 14px 0;
+                    cursor: pointer;
+                }
+                .selectFile {
+                    margin-top: 2%;
+                    display: block;
+                }
+            }
+            .postalCode {
+                width: 25%;
+            }
+            .name {
+                height: auto;
+            }
+            .description {
+                height: 60%;
+                textarea {
+                    height: 75%;
                 }
             }
         }

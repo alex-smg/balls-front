@@ -55,12 +55,16 @@
       white-space: nowrap;
   }
   .formGroup {
-    input, textarea {
+    label {
+      font-weight: 600;
+    }
+    input[type=text], textarea {
       width: 100%;
-      box-shadow: 0px 2px 15px #DFDDDD;
+      /*
+      box-shadow: 0px 2px 15px #DFDDDD;*/
       padding: 10px 20px;
       border-radius: 0.5em;
-      border: 2px solid transparent;
+      border: 1px solid #DEDED7;
       resize: none;
       transition: 0.5s;
     }
@@ -71,6 +75,77 @@
   .flex {
     display: flex;
   }
+
+  input[type="checkbox"]:disabled:not(:checked) {
+    box-shadow: none;
+    border-color: black;
+    background-color: #e9e9e9;
+  }
+
+  .tgl {
+    display: none;
+
+    // add default box-sizing for this scope
+    &,
+    &:after,
+    &:before,
+    & *,
+    & *:after,
+    & *:before,
+    & + .tgl-btn {
+      box-sizing: border-box;
+      &::selection {
+        background: none;
+      }
+    }
+
+    + .tgl-btn {
+      outline: 0;
+      display: block;
+      width: 3em;
+      height: 1.5em;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+      &:after,
+      &:before {
+        position: relative;
+        display: block;
+        content: "";
+        width: 50%;
+        height: 100%;
+      }
+
+      &:after {
+        left: 0;
+      }
+
+      &:before {
+        display: none;
+      }
+    }
+
+    &:checked + .tgl-btn:after {
+      left: 50%;
+    }
+  }
+  .tgl-light {
+    + .tgl-btn {
+      background: #f0f0f0;
+      border-radius: 2em;
+      padding: 2px;
+      transition: all .4s ease;
+      &:after {
+        border-radius: 50%;
+        background: #fff;
+        transition: all .2s ease;
+      }
+    }
+    &:checked + .tgl-btn {
+      background: #294FFF;
+    }
+  }
+
   button {
     cursor: pointer;
   }
