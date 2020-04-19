@@ -39,9 +39,10 @@
 <style lang="scss" scoped>
     #ContainerMap {
         width: 100%;
+        height: 100%;
         #googleMap {
             width: 100%;
-            height: 40vh;
+            height: 100%;
         }
     }
 </style>

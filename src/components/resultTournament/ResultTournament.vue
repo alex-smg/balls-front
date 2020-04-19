@@ -1,9 +1,15 @@
 <template>
     <div id="resultTournament">
-        <Map :markers="markers"></Map>
-        <h3>{{this.dataSearch}}</h3>
-        <ul>
-            <li v-for="tournament in result"> {{ tournament.name }} </li>
+        <h3>Résultats de votre recherche : {{this.dataSearch}}</h3>
+        <div class="containerMap">
+            <Map :markers="markers"></Map>
+        </div>
+        <ul class="containerCard">
+            <li v-for="tournament in result" :key="tournament.id">
+                <div>
+                    <img :src="tournament.image">
+                </div>
+            </li>
         </ul>
     </div>
 </template>
@@ -29,7 +35,7 @@
             search: async function (code, activeReg) {
                 try {
                     console.log('test')
-                    const response = await axios.get(process.env.API + `/tournament/search/${code}`, {
+                    const response = await axios.get(process.env.VUE_APP_API + `/tournament/search/${code}`, {
                         params: {
                             activeReg: activeReg,
                         },
@@ -69,8 +75,15 @@
 
 <style lang="scss" scoped>
     #resultTournament {
-        width: 100%;
+        width: 80%;
         margin: auto;
+        .containerMap {
+            height: 50vh;
+            width: 100%;
+            margin: auto;
+            border-radius: 3em;
+            overflow: hidden;
+        }
         .containerSearch {
             margin: auto;
             width: 100%;

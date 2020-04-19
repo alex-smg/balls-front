@@ -10,7 +10,10 @@
                 <div class="formGroup">
                     <label for="image">
                         Image
-                        <button class="btn-secondary selectFile" @click.prevent="getFile">Sélectionner un fichier</button>
+                        <div class="containerFiles">
+                            <button class="btn-secondary selectFile" @click.prevent="getFile">Sélectionner un fichier</button>
+                            <span>{{nameFile}}</span>
+                        </div>
                         <input class="inputFile" ref="file" type="file" id="image" name="image" @change="onSelect">
                     </label>
                 </div>
@@ -51,9 +54,11 @@
                                 <label for="addressRegion">
                                     Région
                                     <input class="inputText" type="text"  @keydown="inputChange" v-model="searchRegion" id="addressRegion" name="addressRegion">
-                                    <div class="suggestions">
-                                        <ul>
-                                            <li v-for="result in suggestions"><button @click.prevent="selectValue(result.nom, result.code)">{{ result.nom }}</button></li>
+                                    <div class="suggestions" v-show="suggestions.length > 0">
+                                        <ul v-show="suggestions.length > 0">
+                                            <li v-for="result in suggestions" :key="result.id" >
+                                                <button @click.prevent="selectValue(result.nom, result.code)">{{ result.nom }}</button>
+                                            </li>
                                         </ul>
                                     </div>
                                 </label>
@@ -235,19 +240,23 @@
                 regions: [],
                 suggestions: [],
                 searchRegion:'',
+                viewReg: false,
+                nameFile: '',
                 step: 1
             }
         },
 
         mounted() {
             this.getRegions();
-            console.log(this.$refs)
+            if (this.$refs.file.files[0].name) {
+                this.nameFile = this.$refs.file.files.name;
+            }
         },
 
         methods: {
-
             getFile: function () {
                 this.$refs.file.click();
+                console.log(this.$refs.file)
             },
             nextStep: function() {
                 this.step = this.step + 1;
@@ -267,6 +276,7 @@
             },
 
             inputChange () {
+                this.viewReg = true;
                 console.log(this.data.level);
                 if(this.searchRegion.length > 1) {
                     console.log('test2');
@@ -282,14 +292,17 @@
                 // now `items` will be showed in the suggestion list
             },
             selectValue (nom, codeRegion) {
+                this.suggestions= [];
+                console.log(nom);
+                this.viewReg = false;
                 this.searchRegion = nom;
                 this.data.addressRegion = nom;
                 this.data.codeRegion = codeRegion;
-                this.suggestions= []
             },
 
             onSelect() {
                 const file = this.$refs.file.files[0];
+                this.nameFile = this.$refs.file.files[0].name;
                 this.data.file = file;
             },
 
@@ -358,9 +371,14 @@
             background-color: #FFFFFF;
             z-index: 100;
             position: relative;
-
+            .containerFiles {
+                display: flex;
+                margin-top: 2%;
+                span {
+                    margin: auto 0 auto 4%;
+                }
+            }
             .suggestions {
-                display: none;
                 position: relative;
                 ul {
                     position: absolute;
@@ -502,7 +520,6 @@
                     cursor: pointer;
                 }
                 .selectFile {
-                    margin-top: 2%;
                     display: block;
                 }
             }
