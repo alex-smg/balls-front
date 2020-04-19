@@ -23,7 +23,6 @@
         props: {
             markers:{
                 type:Array,
-                default:[]
             }
             ,
         },

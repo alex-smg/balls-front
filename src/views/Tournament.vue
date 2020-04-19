@@ -10,7 +10,7 @@
         </div>
         <div>
             <div>
-                <Map></Map>
+                <Map :markers="markers"></Map>
             </div>
             <div>
                 <div>
@@ -28,31 +28,31 @@
         </div>
         <div>
             <div>
-                <h4></h4>
+                <h4>Description</h4>
                 <hr>
-                <p></p>
+                <p>{{data.description}}</p>
             </div>
             <div>
-                <h4></h4>
+                <h4>Details</h4>
                 <hr>
                 <div>
                     <div>
                         <div>
-                            <img>
+                            <img src="../assets/team.svg">
                         </div>
-                        <p></p>
+                        <p>Equipe de {{data.widthTeam}}</p>
                     </div>
                     <div>
                         <div>
-                            <img>
+                            <img src="../assets/gender.svg">
                         </div>
-                        <p></p>
+                        <p>{{data.gender}}</p>
                     </div>
                     <div>
                         <div>
-                            <img>
+                            <img src="../assets/jauge.svg">
                         </div>
-                        <p></p>
+                        <p>{{data.level}}</p>
                     </div>
                 </div>
             </div>
@@ -93,7 +93,13 @@
                 try {
                     const response = await axios.get(process.env.VUE_APP_API + '/tournament/' + id);
                     this.data = response.data;
-                    this.markers.push(response.data.lattitude, response.data.lattitude);
+                    let position = {
+                        position : {
+                        lat: response.data.lattitude,
+                        lng: response.data.longitude
+                    }};
+                    console.log(position)
+                    this.markers.push(position);
                     console.log(response);
                 }catch (e) {
                     console.log(e)
