@@ -5,10 +5,8 @@
             <Map :markers="markers"></Map>
         </div>
         <ul class="containerCard">
-            <li v-for="tournament in result" :key="tournament.id">
-                <div>
-                    <img :src="tournament.image">
-                </div>
+            <li class="card" v-for="tournament in result" :key="tournament.id">
+                <Card :tournament="tournament"></Card>
             </li>
         </ul>
     </div>
@@ -18,17 +16,19 @@
 
     import axios from 'axios';
     import Map from '../map/Map.vue';
+    import Card from '../card/Card.vue';
 
     export default {
         name: "resultTournament",
         components:{
-            Map
+            Map,
+            Card
         },
         data() {
             return {
                 dataSearch: '',
                 result: [],
-                markers: []
+                markers: [],
             }
         },
         methods: {
@@ -66,7 +66,7 @@
                 this.dataSearch = this.$route.params.name;
                 this.search(this.$route.params.code, this.$route.params.activeReg );
             } else {
-                this.$router.push('home');
+                this.$router.push('/search');
             }
 
         }
@@ -77,31 +77,30 @@
     #resultTournament {
         width: 80%;
         margin: auto;
+
+        h3{
+            margin-top: 5%;
+        }
         .containerMap {
             height: 50vh;
             width: 100%;
-            margin: auto;
+            margin: 2% auto 0 auto;
             border-radius: 3em;
             overflow: hidden;
         }
-        .containerSearch {
-            margin: auto;
+
+        .containerCard {
+            display: flex;
+            justify-content: space-between;
+            list-style: none;
             width: 100%;
-            div {
-                display: flex;
-                input {
-                    margin: auto;
-                    padding: 5px 10px;
-                    width: 100%;
-                }
-                button {
-                    width: 20%;
-                }
-            }
-            ul {
-                li {
-                    list-style: none;
-                }
+            flex-wrap: wrap;
+            margin-top: 5%;
+            .card {
+                width: 15%;
+                padding: 2% 2%;
+                border: 2px solid #FFCA28;
+                border-radius: 2em;
             }
         }
     }

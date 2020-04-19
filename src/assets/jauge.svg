@@ -1,0 +1,12 @@
+<svg id="Group_11" data-name="Group 11" xmlns="http://www.w3.org/2000/svg" width="41" height="37" viewBox="0 0 41 37">
+  <g id="Group_6" data-name="Group 6">
+    <g id="Oval" transform="translate(2)" fill="none" stroke="#294fff" stroke-miterlimit="10" stroke-width="3">
+      <circle cx="18.5" cy="18.5" r="18.5" stroke="none"/>
+      <circle cx="18.5" cy="18.5" r="17" fill="none"/>
+    </g>
+    <rect id="Rectangle" width="41" height="18" transform="translate(0 19)" fill="#fff"/>
+    <path id="Path_3" data-name="Path 3" d="M0,14.721,11.5.221" transform="translate(21 4.279)" fill="none" stroke="#294fff" stroke-miterlimit="10" stroke-width="2"/>
+    <path id="Path_3_Copy" data-name="Path 3 Copy" d="M0,14.721,11.5.221" transform="translate(19.75 1.75)" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="3"/>
+    <circle id="Oval-2" data-name="Oval" cx="3" cy="3" r="3" transform="translate(18 16)" fill="#294fff"/>
+  </g>
+</svg>

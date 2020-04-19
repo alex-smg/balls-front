@@ -9,6 +9,7 @@ import log from '../middleware/log'
 import Home from '../views/Home'
 import FirstStepSearch from '../views/FirstStepSearch'
 import CreateTournament from "../views/CreateTournament";
+import Tournament from "../views/Tournament";
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,11 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: Signup
+  },
+  {
+    path: '/tournament/:id',
+    name: 'tournament',
+    component: Tournament
   },
   {
     path: '/login',

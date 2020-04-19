@@ -77,7 +77,7 @@
                         <datetime  type="datetime" v-model="data.date_begin"></datetime>
                     </label>
                     <label for="date_end">
-                        Date de début du tournois
+                        Date de fin du tournois
                         <datetime  type="datetime" v-model="data.date_end"></datetime>
                     </label>
                 </div>
@@ -88,7 +88,7 @@
                     </label>
                     <label for="publish">
                         Publié
-                        <input type="checkbox" id="publish"  class="tgl tgl-light" name="publish">
+                        <input type="checkbox" id="publish" value=true v-model="data.publish" class="tgl tgl-light" name="publish">
                         <span class="tgl-btn"></span>
                     </label>
                 </div>
@@ -235,6 +235,7 @@
                     lattitude: 0,
                     longitude: 0,
                     publish: false,
+                    image: '',
                     file: '',
                 },
                 regions: [],
@@ -312,7 +313,8 @@
                 formData.append('file', this.data.file);
                 formData.append('folder', 'tournament');
                 try {
-                    await this.$http.post(process.env.VUE_APP_API + '/file', formData);
+                    const response = await this.$http.post(process.env.VUE_APP_API + '/file', formData);
+                    this.data.image = response.data;
                     this.getPositionMap()
 
                 } catch (err) {
@@ -336,7 +338,10 @@
                 this.data.level = this.data.level.join(' / ');
 
                 try {
-                    await this.$http.post(process.env.VUE_APP_API + '/tournament', this.data);
+                    const response = await this.$http.post(process.env.VUE_APP_API + '/tournament', this.data);
+                    console.log(response);
+                    response.status === 200 ? this.$router.push('/') : alert('probleme');
+
                 } catch (err) {
                     console.log(err)
                 }
