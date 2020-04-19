@@ -37,7 +37,7 @@
       border-radius: 2em;
       border: none;
       color: #FFFFFF;
-      padding: 5px 35px;
+      padding: 5px 45px;
       font-weight: 600;
       font-size: 16px;
       width: min-content;
@@ -53,6 +53,10 @@
       font-size: 16px;
       width: min-content;
       white-space: nowrap;
+  }
+  .btn-red {
+    border: 2px solid #294FFF;
+    color: #294FFF;
   }
   .formGroup {
     label {

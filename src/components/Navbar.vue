@@ -2,7 +2,7 @@
     <nav id="header">
         <div class="containerHeader">
             <div class="containerLogo">
-                <router-link to="home">
+                <router-link to="/">
                     <img src="../assets/logo.svg">
                 </router-link>
 
@@ -11,7 +11,6 @@
                 <router-link to="search">Trouver un tournois</router-link>
                 <router-link  to="create-tournament">Créer un tournois</router-link>
                 <router-link  to="profil">Mon Profil</router-link>
-                <router-link  to="profil">{{messages}}</router-link>
             </div>
         </div>
     </nav>
@@ -47,7 +46,7 @@
 <style lang="scss" scoped>
     #header {
         .containerHeader {
-            height: 8vh;
+            height: 9vh;
             position: sticky;
             display: flex;
             justify-content: space-between;
@@ -59,10 +58,11 @@
                 color: #3F3F3F;
             }
             .containerLogo {
-                width: 10%;
+                width: 8%;
                 display: flex;
                 img {
                     height: 90%;
+                    display: block;
                     margin: auto;
                 }
             }

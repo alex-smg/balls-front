@@ -6,17 +6,6 @@
         <Search></Search>
       </div>
     </div>
-    <div class="home_side_right">
-      <div>
-        <div>
-          <div class="deco deco_opa"></div>
-          <div class="deco deco_tall">
-            <div class="deco_little"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
@@ -38,10 +27,10 @@ export default {
     height: 82vh;
     .home_side_left{
       display: flex;
-      width: 70%;
+      width: 100%;
       text-align: center;
       .searchTitle{
-        width: 90%;
+        width: 70%;
         margin: auto;
         h2 {
           margin-bottom: 3%;

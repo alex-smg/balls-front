@@ -1,6 +1,7 @@
 <template>
     <div id="createTournament">
-        <div class="background"></div>
+        <!--
+        <div class="background"></div>-->
         <form @submit.prevent="sendFile" id="formPerson" enctype="multipart/form-data">
             <div>
                 <h3>Créer un nouveau tournois</h3>
@@ -9,7 +10,7 @@
                 <div class="formGroup">
                     <label for="image">
                         Image
-                        <button class="btn-secondary selectFile" @click.prevent="getFile">Selectionner un ficher</button>
+                        <button class="btn-secondary selectFile" @click.prevent="getFile">Sélectionner un fichier</button>
                         <input class="inputFile" ref="file" type="file" id="image" name="image" @change="onSelect">
                     </label>
                 </div>
@@ -49,7 +50,7 @@
                                 </label>
                                 <label for="addressRegion">
                                     Région
-                                    <input class="inputText" type="text"  @keydown="inputChange" v-model="data.searchRegion" id="addressRegion" name="addressRegion">
+                                    <input class="inputText" type="text"  @keydown="inputChange" v-model="searchRegion" id="addressRegion" name="addressRegion">
                                     <div class="suggestions">
                                         <ul>
                                             <li v-for="result in suggestions"><button @click.prevent="selectValue(result.nom, result.code)">{{ result.nom }}</button></li>
@@ -68,17 +69,17 @@
                 <div class="formGroup formFlex">
                     <label for="date_begin">
                         Date de début du tournois
-                        <datetime  type="datetime" hour-step=1 minute-step=1 v-model="data.date_begin"></datetime>
+                        <datetime  type="datetime" v-model="data.date_begin"></datetime>
                     </label>
                     <label for="date_end">
                         Date de début du tournois
-                        <datetime  type="datetime" hour-step=1 minute-step=1 v-model="data.date_end"></datetime>
+                        <datetime  type="datetime" v-model="data.date_end"></datetime>
                     </label>
                 </div>
                 <div class="formGroup formFlex">
                     <label for="date_end_inscription">
                         Date de fin des inscriptions
-                        <datetime  type="datetime" hour-step=1 minute-step=1 v-model="data.date_end_inscription"></datetime>
+                        <datetime  type="datetime" v-model="data.date_end_inscription"></datetime>
                     </label>
                     <label for="publish">
                         Publié
@@ -240,13 +241,13 @@
 
         mounted() {
             this.getRegions();
+            console.log(this.$refs)
         },
 
         methods: {
 
             getFile: function () {
-                let select_file = document.querySelector('#image');
-                select_file.focus();
+                this.$refs.file.click();
             },
             nextStep: function() {
                 this.step = this.step + 1;
@@ -267,7 +268,7 @@
 
             inputChange () {
                 console.log(this.data.level);
-                if(this.regions.length > 1) {
+                if(this.searchRegion.length > 1) {
                     console.log('test2');
                     this.suggestions = [];
                     this.regions.filter(item => {
@@ -281,9 +282,10 @@
                 // now `items` will be showed in the suggestion list
             },
             selectValue (nom, codeRegion) {
-                this.data.searchRegion = nom;
+                this.searchRegion = nom;
                 this.data.addressRegion = nom;
                 this.data.codeRegion = codeRegion;
+                this.suggestions= []
             },
 
             onSelect() {
@@ -344,18 +346,51 @@
             z-index: 0;
         }
         h3 {
-            color: #FFCA28;
+            color: #FFC929;
         }
         form {
             display: block;
             margin: 5% auto 0 auto;
             width: 50%;
-            border: 3px solid #FFDF7E;
+            border: 3px solid #FFC929;
             border-radius: 1em;
             padding: 2% 2%;
             background-color: #FFFFFF;
             z-index: 100;
             position: relative;
+
+            .suggestions {
+                display: none;
+                position: relative;
+                ul {
+                    position: absolute;
+                    list-style: none;
+                    width: min-content;
+                    background-color: #ffffff;
+                    overflow-x: hidden;
+                    border-left: 2px solid #FFCA28;
+                    border-right: 2px solid #FFCA28;
+                    border-bottom: 2px solid #FFCA28;
+                    ::-webkit-scrollbar-track {
+                        box-shadow: inset 0 0 5px grey;
+                        border-radius: 10px;
+                    }
+                    li {
+                        white-space: nowrap;
+                        button {
+                            background-color: #ffffff;
+                            padding: 5px 30px;
+                            border: none;
+                            font-weight: 600;
+                            margin: 3px 0 3px 0;
+                        }
+                    }
+
+                }
+            }
+            #addressRegion:focus + .suggestions {
+                display: block;
+            }
 
             .container {
                 display: flex;
@@ -367,6 +402,7 @@
                     width: 48%;
                     .flexreg {
                         display: flex;
+                        width: 100%;
                         justify-content: space-between;
                         label {
                             width: 48%;
