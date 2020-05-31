@@ -90,17 +90,15 @@
         }
 
         .containerCard {
-            display: flex;
-            justify-content: space-between;
             list-style: none;
-            width: 100%;
+            display: flex;
             flex-wrap: wrap;
+            width: 100%;
             margin-top: 5%;
             .card {
-                width: 15%;
+                display: inline-block;
+                width: 25%;
                 padding: 2% 2%;
-                border: 2px solid #FFCA28;
-                border-radius: 2em;
             }
         }
     }

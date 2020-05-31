@@ -40,11 +40,13 @@
 </script>
 
 <style lang="scss" scoped>
-.card {
-    width: 15%;
-    padding: 2% 2%;
+.insideCard {
+    width: max-content;
+    padding: 40px;
+    justify-content: space-between;
     border: 2px solid #FFCA28;
     border-radius: 2em;
+    margin: auto;
     .imgTournament {
         width: 8vw;
         height: 8vw;
