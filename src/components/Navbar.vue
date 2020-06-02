@@ -8,9 +8,9 @@
 
             </div>
             <div class="containerMenu">
-                <router-link to="search">Trouver un tournois</router-link>
-                <router-link  to="create-tournament">Créer un tournois</router-link>
-                <router-link  to="profil">Mon Profil</router-link>
+                <router-link to="/search" exact>Trouver un tournois</router-link>
+                <router-link  to="/create-tournament" exact>Créer un tournois</router-link>
+                <router-link  to="/profil" exact>Mon Profil</router-link>
             </div>
         </div>
     </nav>

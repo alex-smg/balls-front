@@ -1,22 +1,12 @@
 <template>
     <div id="createTournament">
-        <!--
-        <div class="background"></div>-->
+        <div class="background"></div>
         <form @submit.prevent="sendFile" id="formPerson" enctype="multipart/form-data">
             <div>
                 <h3>Créer un nouveau tournois</h3>
             </div>
             <div v-show="step === 1" class="stepOne">
-                <div class="formGroup">
-                    <label for="image">
-                        Image
-                        <div class="containerFiles">
-                            <button class="btn-secondary selectFile" @click.prevent="getFile">Sélectionner un fichier</button>
-                            <span>{{nameFile}}</span>
-                        </div>
-                        <input class="inputFile" ref="file" type="file" id="image" name="image" @change="onSelect">
-                    </label>
-                </div>
+                <File @add-file="addFile"/>
                 <div class="container">
                     <div class="container-left">
                         <div class="formGroup name">
@@ -25,12 +15,13 @@
                                 <input class="inputText" type="text" v-model="data.name" id="name" name="name">
                             </label>
                         </div>
-                        <div class="formGroup description">
-                            <label for="description">
-                                Description
-                                <textarea class="inputText" type="text" v-model="data.description" id="description" name="description"></textarea>
-                            </label>
-                        </div>
+                        <input-texta
+                            v-bind:title="data.description"
+                            v-on:update:title="data.description = $event"
+                            label="Description"
+                            name="description"
+                            id="description"
+                        />
                     </div>
                     <div class="container-right">
                         <div class="formGroup">
@@ -62,7 +53,6 @@
                                         </ul>
                                     </div>
                                 </label>
-
                             </div>
                         </div>
                     </div>
@@ -74,17 +64,17 @@
                 <div class="formGroup formFlex">
                     <label for="date_begin">
                         Date de début du tournois
-                        <datetime  type="datetime" v-model="data.date_begin"></datetime>
+                        <datetime  type="datetime" :v-model="JSON.stringify(data.date_begin)"></datetime>
                     </label>
                     <label for="date_end">
                         Date de fin du tournois
-                        <datetime  type="datetime" v-model="data.date_end"></datetime>
+                        <datetime  type="datetime" :v-model="JSON.stringify(data.date_end)"></datetime>
                     </label>
                 </div>
                 <div class="formGroup formFlex">
                     <label for="date_end_inscription">
                         Date de fin des inscriptions
-                        <datetime  type="datetime" v-model="data.date_end_inscription"></datetime>
+                        <datetime  type="datetime" :v-model="JSON.stringify(data.date_end_inscription)"></datetime>
                     </label>
                     <label for="publish">
                         Publié
@@ -206,6 +196,8 @@
 
 <script>
     import axios from 'axios';
+    import File from '../components/fields/File';
+    import InputTexta from '../components/fields/Textarea';
     import { Datetime } from 'vue-datetime'
     // You need a specific loader for CSS files
     import 'vue-datetime/dist/vue-datetime.css'
@@ -213,7 +205,9 @@
     export default {
         name: "createTournament",
         components: {
-            Datetime
+            Datetime,
+            File,
+            InputTexta
         },
         data() {
             return {
@@ -236,11 +230,12 @@
                     longitude: 0,
                     publish: false,
                     image: '',
-                    file: '',
+                    creator: localStorage.idPerson
                 },
                 regions: [],
                 suggestions: [],
                 searchRegion:'',
+                file:'',
                 viewReg: false,
                 nameFile: '',
                 step: 1
@@ -248,20 +243,19 @@
         },
 
         mounted() {
-            this.getRegions();
-            if (this.$refs.file.files[0].name) {
-                this.nameFile = this.$refs.file.files.name;
+            if (!localStorage.isToken) {
+                this.$router.push('/login')
             }
+            this.getRegions();
         },
 
         methods: {
-            getFile: function () {
-                this.$refs.file.click();
-                console.log(this.$refs.file)
+            addFile: function (file) {
+                this.file = file;
+                console.log(this.file)
             },
             nextStep: function() {
                 this.step = this.step + 1;
-                console.log(this.step)
             },
             prevStep: function() {
                 this.step = this.step - 1
@@ -301,16 +295,9 @@
                 this.data.codeRegion = codeRegion;
             },
 
-            onSelect() {
-                const file = this.$refs.file.files[0];
-                this.nameFile = this.$refs.file.files[0].name;
-                this.data.file = file;
-            },
-
             async sendFile() {
-
                 const formData = new FormData();
-                formData.append('file', this.data.file);
+                formData.append('file', this.file);
                 formData.append('folder', 'tournament');
                 try {
                     const response = await this.$http.post(process.env.VUE_APP_API + '/file', formData);
@@ -370,19 +357,12 @@
             display: block;
             margin: 5% auto 0 auto;
             width: 50%;
-            border: 3px solid #FFC929;
+            border: 3px solid #FFDF7E;
             border-radius: 1em;
             padding: 2% 2%;
             background-color: #FFFFFF;
             z-index: 100;
             position: relative;
-            .containerFiles {
-                display: flex;
-                margin-top: 2%;
-                span {
-                    margin: auto 0 auto 4%;
-                }
-            }
             .suggestions {
                 position: relative;
                 ul {
@@ -514,15 +494,6 @@
                 .inputText {
                     width: 100%;
                     padding: 8px 15px;
-                }
-                #image {
-                    position: absolute;
-                    visibility: hidden;
-                    top: 0; left: 0;
-                    width: 225px;
-                    opacity: 0;
-                    padding: 14px 0;
-                    cursor: pointer;
                 }
                 .selectFile {
                     display: block;

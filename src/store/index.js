@@ -8,6 +8,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     userSession: {
+        id: '',
       email: '',
       image: '',
       height: '',
@@ -23,17 +24,22 @@ const store = new Vuex.Store({
   },
   mutations: {
     pushDataUserSession(state, data) {
-          state.userSession.email = data.email,
-          state.userSession.image = data.image,
-          state.userSession.height = data.height,
-          state.userSession.birth = data.birth,
-          state.userSession.postPlayer = data.postPlayer,
-          state.userSession.level = data.level,
-          state.userSession.gender = data.gender,
-          state.userSession.club = data.club,
-          state.userSession.firstname = data.firstname,
-          state.userSession.lastname = data.lastname,
-          state.userSession.isToken = true
+      state.userSession.id = data.id,
+      state.userSession.email = data.email,
+      state.userSession.image = data.image,
+      state.userSession.height = data.height,
+      state.userSession.birth = data.birth,
+      state.userSession.postPlayer = data.postPlayer,
+      state.userSession.level = data.level,
+      state.userSession.gender = data.gender,
+      state.userSession.club = data.club,
+      state.userSession.firstname = data.firstname,
+      state.userSession.lastname = data.lastname,
+      state.userSession.teams = data.teams,
+      state.userSession.isToken = true
+    },
+    addTeamInUserSession(state, data) {
+      state.userSession.teams = [... data];
     },
     deleteDataUserSession(state) {
       state.userSession = {}
@@ -59,6 +65,9 @@ const store = new Vuex.Store({
     },
     populateUserSession({commit}, data) {
       commit('pushDataUserSession', data);
+    },
+    addTeam({commit}, data) {
+      commit('addTeam', data)
     },
 
     logout({commit}) {

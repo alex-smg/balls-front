@@ -55,8 +55,8 @@
       white-space: nowrap;
   }
   .btn-red {
-    border: 2px solid #294FFF;
-    color: #294FFF;
+    border: 2px solid #DB4437;
+    color: #DB4437;
   }
   .formGroup {
     label {

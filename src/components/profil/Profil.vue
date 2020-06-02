@@ -5,8 +5,8 @@
         <div class="containerProfile">
             <div class="containerLeft">
                 <div class="containerImg">
-                    <div class="maskImg">
-                        <img :src="'http://localhost:3000/'+ currentUser.image">
+                    <div class="maskImg" :style="{ backgroundImage:  'url(http://localhost:3000/'+ currentUser.image+')'}">
+                        <!--<img :src="'http://localhost:3000/'+ currentUser.image">-->
                     </div>
 
                 </div>
@@ -15,7 +15,7 @@
                     <button class="btn-secondary">Créer un tournois</button>
                     <button class="btn-secondary" @click="openModalTeam">Créer une team</button>
 
-                    <button @click="logout">déconnexion</button>
+                    <button class="btn-secondary btn-red" @click="logout">Déconnexion</button>
                 </div>
 
             </div>
@@ -49,22 +49,34 @@
                 </section>
                 <section>
                     <div class="hr"></div>
-                    <h3 class="hind">Mes teams</h3>
+                    <div>
+                        <h3 class="hind">Mes teams</h3>
+                        <ul class="teams">
+                            <li :key="team.id" v-for=" team in currentUser.teams">
+                                <div class="containerImg" :style="{ backgroundImage:  'url(http://localhost:3000/'+ team.image+')'}">
+
+                                </div>
+                                <p>
+                                    {{team.name}}
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
                 </section>
             </div>
         </div>
-        <modal-team @close-modal="closeModalTeam" v-show="modalTeam"></modal-team>
+        <modal type="modalTeam" @close-modal="closeModalTeam" v-show="modalTeam"></modal>
 
     </div>
 </template>
 
 <script>
     import store from '../../store/index';
-    import ModalTeam from "../modal/modalteam";
+    import Modal from "../modal/Modal";
     import axios from 'axios';
     export default {
         name: "Profil",
-        components: {ModalTeam},
+        components: {Modal},
         data() {
             return {
                 modalTeam: false,
@@ -89,7 +101,7 @@
                     this.birth = birth;
                     let age = new Date(this.currentUser.birth).getFullYear();
                     let currentYear = new Date().getFullYear();
-                    this.age = currentYear - age + 'ans';
+                    this.age = currentYear - age + ' ans';
             },
             getPerson: async function (id) {
                 try {
@@ -118,6 +130,7 @@
 <style lang="scss" scoped>
     #profil {
         display: flex;
+        height: 91vh;
         .containerProfile {
             width: 70%;
             margin: auto;
@@ -127,13 +140,20 @@
                     min-width: 100%;
                     text-overflow: clip;
                     margin: 2vh 0 2vh 0 ;
+                    &:last-child {
+                        margin-top: 100px;
+                    }
                 }
                 .containerImg {
                     width: 100%;
                     .maskImg {
+                        background-size: cover;
+                        background-position : 50% 50%;
+                        background-repeat: no-repeat;
                         width: 10vw;
                         height: 10vw;
                         overflow: hidden;
+                        margin: auto;
                         border-radius: 100%;
                         border: 6px solid #FFCA28;
                         position: relative;
@@ -149,12 +169,50 @@
                 section {
                     margin: 4vh 0 4vh 0;
                     display: flex;
+                    .flex {
+                        margin: 16px 0;
+                    }
+                    h2 {
+                        margin: 8px 0px;
+                    }
+                    .teams {
+                        width: 50%;
+                        display: block;
+                        .containerImg {
+                            background-size : contain;
+                            background-position : 50% 50%;
+                        }
+                        li {
+                            width: 22%;
+                            display: inline-block;
+                            margin-right: 20px;
+                            margin-bottom: 10px;
+                            list-style: none;
+                            border-radius: 12px;
+                            border: 2px solid #5472FB;
+                            overflow: hidden;
+                            height: 18vh;
+                            text-align: center;
+                            div {
+                                max-width: 100%;
+                                min-width: 100%;
+                                overflow: hidden;
+                                height: 70%;
+                                margin-bottom: 10px;
+                                img {
+                                    min-width: 100%;
+                                    min-height: 100%;
+                                }
+                            }
+                        }
+                    }
 
                     .hr {
                         width: 5px;
                         background-color: #FFCA28;
                         margin: 0 20px;
                         border-radius: 5em;
+                        min-width: 5px;
                     }
                     .min-title {
                         color: #CFCFCF;

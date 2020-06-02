@@ -13,7 +13,7 @@
             <img src="../../assets/jauge.svg">
         </div>
         <div class="link">
-            <router-link class="btn-primary" :to="{path: 'tournament/' + data._id}">Voir</router-link>
+            <router-link class="btn-primary" :to="'tournament/' + data._id">Voir</router-link>
         </div>
     </div>
 </template>

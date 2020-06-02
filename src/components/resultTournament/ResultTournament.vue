@@ -34,7 +34,6 @@
         methods: {
             search: async function (code, activeReg) {
                 try {
-                    console.log('test')
                     const response = await axios.get(process.env.VUE_APP_API + `/tournament/search/${code}`, {
                         params: {
                             activeReg: activeReg,

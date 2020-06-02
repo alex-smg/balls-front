@@ -1,43 +1,74 @@
 <template>
-    <div id="modalForm">
-        <div class="background" @click.prevent="$emit('close-modal')"></div>
-        <div class="containerForm">
-            <div class="header flex hind">
-                <button @click.prevent="$emit('close-modal')">X</button>
+
+    <div v-if="!teamCreated">
+        <form @submit.prevent="sendFile" enctype="multipart/form-data">
+            <h3>Créer une nouvelle team</h3>
+            <input-text
+                    v-bind:title="team.name"
+                    v-on:update:title="team.name = $event"
+                    label="Nom de la team"
+                    placeholder="Nom de la team"
+                    name="name"
+                    id="name"
+                    showLabel=false
+            />
+            <input-text
+                v-bind:title="team.nbrPlayer"
+                v-on:update:title="team.nbrPlayer = $event"
+                label="Nombre de joueur"
+                placeholder="0"
+                name="nbrPlayer"
+                id="nbrPlayer"
+                showLabel=false
+            />
+            <input-texta
+                    v-bind:title="team.description"
+                    v-on:update:title="team.description = $event"
+                    label="Description"
+                    name="description"
+                    id="description"
+                    placeholder="Une petite description..."
+            />
+            <File @add-file="addFile"/>
+            <div class="formGroup">
+                <p class="addplayer">Ajouter des joueurs</p>
+                <div class="flex" v-for="email in team.emailPlayer" :key="email.id">
+                    <input class="inputText" type="text" v-model="team.emailPlayer[email.id].email"  name="player" placeholder="L'email du joueur que tu veux ajouter">
+                    <button v-if="email.id > 0 " @click.prevent="deleteEmailPlayer(email.id)">X</button>
+                </div>
+                <button @click.prevent="addEmailPlayer" class="btn-secondary addEmail">+</button>
             </div>
-            <form>
-                <h3>Créer une nouvelle team</h3>
-                <div class="formGroup">
-                        <input class="inputText" type="text"  id="name" name="name" v-model="team.name" placeholder="Nom de la team">
-                </div>
-                <div class="formGroup">
-                        <textarea class="inputText" type="text"  id="description" name="description" v-model="team.description" placeholder="Une petite description..."></textarea>
-                </div>
-                <div class="formGroup">
-                        <input class="inputText" type="file"  id="file" name="file">
-                </div>
-                <div class="formGroup">
-                    <div class="flex" v-for="email in team.emailPlayer" :key="email.id">
-                        <input class="inputText" type="text" v-model="team.emailPlayer[email.id].email"  name="player" placeholder="L'email du joueur que tu veux ajouter">
-                        <button v-if="email.id > 0 " @click.prevent="deleteEmailPlayer(email.id)">X</button>
-                    </div>
-                    <button @click.prevent="addEmailPlayer" class="btn-secondary addEmail">+</button>
-                </div>
-                <button class="btn-primary submit"  @click.prevent="createTeam">Enregistrer</button>
-            </form>
-        </div>
+            <button class="btn-primary submit">Enregistrer</button>
+        </form>
     </div>
 </template>
 
 <script>
+    import Validation from './Validation';
+    import store from '../../store/index';
+    import File from '../fields/File';
+    import InputText from '../fields/InputText';
+    import InputTexta from '../fields/Textarea';
     export default {
         name: "modalTeam",
+        components: {
+            Validation,
+            File,
+            InputText,
+            InputTexta
+        },
         data() {
             return{
                 modalTeam : false,
+                teamCreated: false,
+                file: [],
                 team: {
                     name: '',
                     description: '',
+                    image: '',
+                    nbrPlayer: 0,
+                    player_creator: localStorage.idPerson,
+                    player_admin: localStorage.idPerson,
                     emailPlayer: [
                         {
                             id: 0,
@@ -49,11 +80,18 @@
                 currentIdPlayer: 0
             }
         },
+        mounted() {
+          console.log(store.state.userSession.id)
+        },
         methods: {
+
+            addFile: function (file) {
+                this.file = file;
+                console.log(this.file)
+            },
             createTeam: async function () {
                 try {
                     const response = await this.$http.post(process.env.VUE_APP_API +'/team', this.team);
-                    console.log(response);
                     let idTeam = response.data;
                     this.team.emailPlayer.forEach( async (player) => {
                         const response = await this.$http.get(process.env.VUE_APP_API + '/person/search/email',
@@ -64,14 +102,33 @@
                                 }
                             }
                         );
-                        console.log(response);
                         player.idPlayer = response.data;
-                        console.log(player.idPlayer)
                         this.addRequestTeam(player.idPlayer, idTeam)
                     })
+
+                    store.dispatch('addTeam', response.data);
+                    this.teamCreated = true;
+
+
                 } catch(err) {
                     console.log(err)
                 }
+            },
+            async sendFile() {
+                const formData = new FormData();
+                formData.append('file', this.file);
+                formData.append('folder', 'team');
+                try {
+                    const response = await this.$http.post(process.env.VUE_APP_API + '/file', formData);
+                    this.team.image = response.data;
+                    this.createTeam()
+
+                } catch (err) {
+                    console.log(err)
+                }
+            },
+            resetTeamCreated: function() {
+                this.teamCreated = false;
             },
             addRequestTeam: async function(idPlayer, id) {
                 try{
@@ -105,6 +162,7 @@
             deleteEmailPlayer: function (id) {
                 console.log(id);
                 this.team.emailPlayer.splice(id, 1);
+                this.currentIdPlayer = this.currentIdPlayer - 1;
                 console.log(this.team.emailPlayer)
             }
 
@@ -112,47 +170,31 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     #modalForm {
-        height: 100vh;
-        width: 100vw;
-        position: fixed;
-        top: 0;
-        display: flex;
-        .background{
-            position: absolute;
-            z-index: 1;
-            width: 100%;
-            height: 100%;
-            background-color: #3F3F3F;
-            opacity: 0.5;
+        #nbrPlayer {
+            width: 20%;
         }
-        .containerForm {
-            z-index: 1000;
-            opacity: 1;
-            background-color: #FFFFFF;
-            width: min-content;
-            border-radius: 1em;
-            margin: auto;
-            .header {
-                position: relative;
-                button {
-                    position: absolute;
-                    right: 2vh;
-                    top: 1.5vh;
-                    background-color: transparent;
-                    border: none;
-                    font-size: 24px;
-                    font-weight: 800;
-                    color: #FFCA28;
-                    z-index: 1000;
-                }
-            }
+        .containerModal {
             form {
                 padding: 50px;
                 width: 30vw;
                 opacity: 1;
                 position: relative;
+                h3 {
+                    margin-bottom: 32px;
+                }
+                .inputText, .textarea {
+                    p {
+                        font-weight: 600;
+                        font-size: 14px;
+                    }
+                }
+                .addplayer {
+                    font-weight: 600;
+                    font-size: 14px;
+                    margin-top: 20px;
+                }
                 input, textarea {
                     margin: 20px 0px;
                 }

@@ -1,6 +1,6 @@
 <template>
     <div id="signup">
-        <form @submit.prevent="sendSignUp" id="formPerson" enctype="multipart/form-data">
+        <form @submit.prevent="sendFile" id="formPerson" enctype="multipart/form-data">
             <div class="formGroup">
                 <label for="email">
                     Email
@@ -28,7 +28,7 @@
             <div class="formGroup">
                 <label for="postPlayer">
                     Genre
-                    <select class="inputSelect"  v-model="data.genre" name="genre">
+                    <select class="inputSelect"  v-model="data.gender" name="genre">
                         <option value="homme">Homme</option>
                         <option value="femme">Femme</option>
                     </select>
@@ -41,12 +41,7 @@
                 </label>
             </div>
 
-            <div class="formGroup">
-                <label for="image">
-                    Photo
-                    <input class="inputFile" ref="file" type="file" name="image" @change="onSelect">
-                </label>
-            </div>
+            <File @add-file="addFile"/>
             <div class="formGroup">
                 <label for="height">
                     Taille
@@ -98,9 +93,12 @@
 </template>
 
 <script>
+    import File from '../fields/File'
     export default {
         name: "Signup",
-        components: {},
+        components: {
+            File
+        },
         data() {
             return {
                 data: {
@@ -108,14 +106,15 @@
                     lastname: '',
                     email: '',
                     password: '',
-                    genre: '',
+                    gender: '',
                     birth: '',
-                    file:'',
+                    image: '',
                     postPlayer: '',
                     club: '',
                     level: '',
                     height: 0,
                 },
+                file:'',
 
 
             }
@@ -126,24 +125,28 @@
             onSelect() {
                 const file = this.$refs.file.files[0];
                 this.data.file = file;
+            },
+            addFile: function (file) {
+                this.file = file;
+                console.log(this.file)
+            },
+            async sendFile() {
+                const formData = new FormData();
+                formData.append('file', this.file);
+                formData.append('folder', 'profil');
+                try {
+                    const response = await this.$http.post(process.env.VUE_APP_API + '/file', formData);
+                    this.data.image = response.data;
+                    this.sendSignUp()
 
+                } catch (err) {
+                    console.log(err)
+                }
             },
             async sendSignUp() {
-                const formData = new FormData();
-                formData.append('firstname', this.data.firstname);
-                formData.append('lastname', this.data.lastname);
-                formData.append('email', this.data.email);
-                formData.append('password', this.data.password);
-                formData.append('genre', this.data.genre);
-                formData.append('birth', this.data.birth);
-                formData.append('file', this.data.file);
-                formData.append('postPlayer', this.data.postPlayer);
-                formData.append('club', this.data.club);
-                formData.append('level', this.data.level);
-                formData.append('height', this.data.height);
                 try {
-                    await this.$http.post(process.env.API + 'person', formData);
-                    console.log(this.data.image);
+                    await this.$http.post(process.env.VUE_APP_API + '/person', this.data);
+                    this.$router.push('/login')
                 } catch(err) {
                     console.log(err)
                 }
