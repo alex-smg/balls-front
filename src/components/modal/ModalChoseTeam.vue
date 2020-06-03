@@ -5,12 +5,14 @@
             <button class="btn-primary">Je créer ma team</button>
         </div>
         <div v-else>
-            <h3>Séléctionne la team que tu veux inscrire</h3>
-            <ul>
-                <li v-for="team in teams" :key="team.id">
-                    <button>{{team.name}}</button>
-                </li>
-            </ul>
+            <form enctype="multipart/form-data">
+                <h3>Séléctionne la team que tu veux inscrire</h3>
+                <ul>
+                    <li v-for="team in teams" :key="team.id">
+                        <button @click.prevent="addTeam(idTournament, team._id)">{{team.name}}</button>
+                    </li>
+                </ul>
+            </form>
         </div>
     </div>
 </template>
@@ -18,6 +20,7 @@
     export default {
         name: "modalChoseTeam",
         components: {},
+        props: ['idTournament'],
         data() {
             return {
                 teams: []
@@ -25,6 +28,24 @@
         },
         mounted() {
             this.teams = this.$store.state.userSession.teams
+        },
+        methods : {
+            addTeam : async function(idTournament, idTeam) {
+
+                try {
+                    console.log(idTournament);
+                    console.log(idTeam);
+                    const value = {
+                        idTournament : idTournament,
+                        idTeam : idTeam
+                    }
+                    const response = this.$http.post(process.env.VUE_APP_API + '/tournament/addTeam', value);
+                    console.log(response)
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            }
         }
     }
 </script>

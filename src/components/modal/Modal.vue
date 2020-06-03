@@ -6,7 +6,7 @@
                 <button @click="close">X</button>
             </div>
             <modal-team v-if="type === 'modalTeam'"></modal-team>
-            <modal-chose-team  v-if="type === 'modalChoseTeam'"></modal-chose-team>
+            <modal-chose-team :id-tournament="idTournament" v-if="type === 'modalChoseTeam'"></modal-chose-team>
             <validation  v-if="type === 'validation'" @close-modal="$emit('close-modal')" @reset-teamcreated="resetTeamCreated"></validation>
         </div>
     </div>
@@ -18,7 +18,7 @@
     export default {
         name: "",
         components: {Validation, ModalChoseTeam, ModalTeam},
-        props: ['type'],
+        props: ['type', 'idTournament'],
         data() {
             return {}
         },

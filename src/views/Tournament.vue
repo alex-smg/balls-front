@@ -68,7 +68,7 @@
                 </div>
             </div>
         </section>
-        <modal v-if="modal === true" @close-modal="closeModal" :type="typeModal"/>
+        <modal v-if="modal === true" @close-modal="closeModal" :id-tournament="data._id" :type="typeModal"/>
     </div>
 </template>
 
