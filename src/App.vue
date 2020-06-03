@@ -12,6 +12,29 @@
     name: "Home",
     components: {
       Navbar
+    },
+    methods: {
+      getPerson: async function (id) {
+        try {
+          const response = await this.$http.get(process.env.VUE_APP_API +`/person/${id}`, {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          });
+          this.$store.dispatch('populateUserSession', response.data);
+          this.formatDate();
+        } catch (error) {
+          console.log(error)
+        }
+
+      },
+    },
+    mounted() {
+      console.log(this.$store.state.userSession);
+      if (localStorage.isToken && this.$store.state.userSession.email === '') {
+        console.log('test P');
+        this.getPerson(localStorage.idPerson);
+      }
     }
   }
 </script>

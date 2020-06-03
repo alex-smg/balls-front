@@ -12,7 +12,7 @@
         </div>
         <section class="section-map">
             <div>
-                <Map class="map" :markers="markers"></Map>
+                <Map class="map" v-if="markers[0].position.lat !== 0" :markers="markers"></Map>
             </div>
             <div class="adress">
                 <div>
@@ -61,14 +61,14 @@
         </section>
         <section class="section-btn">
             <div>
-                <p>il reste de la place pour 15 équipes</p>
+                <p>il reste de la place pour {{restTeam}} équipes</p>
                 <div>
                     <button class="btn-secondary" @click="openModal('modalTeam')">Créer une team</button>
-                    <button class="btn-primary" @click="openModal('modalChoseTeam')">Inscrire une team</button>
+                    <button disabled="restTeam > 0" class="btn-primary" @click="openModal('modalChoseTeam')">Inscrire une team</button>
                 </div>
             </div>
         </section>
-        <modal v-if="modal === true" @close-modal="closeModal" :id-tournament="data._id" :type="typeModal"/>
+        <modal v-if="modal === true" @close-modal="closeModal" @update-tournament="updateTournament" :id-tournament="data._id" :type="typeModal"/>
     </div>
 </template>
 
@@ -87,14 +87,23 @@
             return{
                 data: [],
                 baseUrl: process.env.VUE_APP_API,
-                markers: [],
+                markers: [
+                    {
+                        position : {
+                            lat: 0,
+                            lng: 0
+                        }
+                    }
+
+                ],
+                restTeam: '',
                 modal: false,
                 typeModal: '',
             }
         },
         mounted(){
-            console.log(this.$route.params);
             this.getData(this.$route.params.id);
+            this.restTeam = this.data.numberTeam
         },
         methods: {
             openModal : function(typeModal) {
@@ -102,24 +111,24 @@
               this.typeModal= typeModal;
               console.log(this.modal)
             },
+            updateTournament: function(data) {
+                this.data = data;
+                const rest = this.data.numberTeam - this.data.teams.length;
+                this.restTeam = rest <= 0 ? 0 : rest
+            },
             closeModal: function() {
                 this.modal = false;
                 this.typeModal = '';
-                console.log('test')
             },
             getData: async function(id) {
                 try {
                     const response = await axios.get(process.env.VUE_APP_API + '/tournament/' + id);
                     response.data.date_begin = new Date(response.data.date_begin).toLocaleDateString();
+                    this.markers[0].position.lat = response.data.lattitude;
+                    this.markers[0].position.lng = response.data.longitude;
                     this.data = response.data;
-                    let position = {
-                        position : {
-                        lat: response.data.lattitude,
-                        lng: response.data.longitude
-                    }};
-                    console.log(response.data)
-                    this.markers.push(position);
-                    console.log(this.markers);
+                    const rest = this.data.numberTeam - this.data.teams.length;
+                    this.restTeam = rest <= 0 ? 0 : rest
                 }catch (e) {
                     console.log(e)
                 }

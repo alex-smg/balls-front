@@ -6,7 +6,7 @@
                 <button @click="close">X</button>
             </div>
             <modal-team v-if="type === 'modalTeam'"></modal-team>
-            <modal-chose-team :id-tournament="idTournament" v-if="type === 'modalChoseTeam'"></modal-chose-team>
+            <modal-chose-team :id-tournament="idTournament"  @update-tournament="updateTournament" v-if="type === 'modalChoseTeam'"></modal-chose-team>
             <validation  v-if="type === 'validation'" @close-modal="$emit('close-modal')" @reset-teamcreated="resetTeamCreated"></validation>
         </div>
     </div>
@@ -26,6 +26,10 @@
             close : function () {
                 console.log('test');
                 this.$emit('close-modal')
+            },
+            updateTournament: function(data) {
+                console.log(data);
+                this.$emit('update-tournament', data)
             }
         }
     }

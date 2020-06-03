@@ -39,8 +39,9 @@
                         idTournament : idTournament,
                         idTeam : idTeam
                     }
-                    const response = this.$http.post(process.env.VUE_APP_API + '/tournament/addTeam', value);
-                    console.log(response)
+                    const response = await this.$http.post(process.env.VUE_APP_API + '/tournament/addTeam', value);
+                    console.log(response);
+                    this.$emit('update-tournament', response.data)
                 }
                 catch (e) {
                     console.log(e);

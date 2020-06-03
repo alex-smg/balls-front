@@ -1,7 +1,7 @@
 <template>
     <diV id="ContainerMap">
         <GmapMap id="googleMap"
-                :center="{lat: markers[0].position.lat, lng:markers[0].position.lng}"
+                :center="{lat: lattitude, lng: longitude}"
                 :zoom="11"
                 map-type-id="terrain"
         >
@@ -17,21 +17,19 @@
    </div>
 </template>
 <script>
-    import {gmapApi} from 'vue2-google-maps'
     export default {
         name: "map",
-        props: {
-            markers:{
-                type:Array,
-            }
-            ,
-        },
+        props: ['markers'],
         data() {
             return {
+                lattitude: this.markers[0].position.lat,
+                longitude: this.markers[0].position.lng
             }
         },
         mounted() {
-            console.log(this.markers);
+            console.log(this.markers)
+            console.log(this.lattitude)
+            console.log(this.longitude)
         }
     }
 </script>

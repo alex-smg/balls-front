@@ -103,22 +103,6 @@
                     let currentYear = new Date().getFullYear();
                     this.age = currentYear - age + ' ans';
             },
-            getPerson: async function (id) {
-                try {
-                    const response = await axios.get(process.env.VUE_APP_API +`/person/${id}`, {
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        }
-                    });
-
-                    console.log(response.data)
-                    store.dispatch('populateUserSession', response.data);
-                    this.formatDate();
-                } catch (error) {
-                    console.log(error)
-                }
-
-            },
         },
         mounted() {
             this.getPerson(localStorage.idPerson);
