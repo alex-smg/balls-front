@@ -94,7 +94,6 @@
                             lng: 0
                         }
                     }
-
                 ],
                 restTeam: '',
                 modal: false,

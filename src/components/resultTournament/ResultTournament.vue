@@ -2,7 +2,7 @@
     <div id="resultTournament">
         <h3>Résultats de votre recherche : {{this.dataSearch}}</h3>
         <div class="containerMap">
-            <Map :markers="markers"></Map>
+            <google-map v-if="markers.length > 0 " :markers="markers"></google-map>
         </div>
         <ul class="containerCard">
             <li class="card" v-for="tournament in result" :key="tournament.id">
@@ -15,20 +15,21 @@
 <script>
 
     import axios from 'axios';
-    import Map from '../map/Map.vue';
+    import GoogleMap from '../map/Map.vue';
     import Card from '../card/Card.vue';
 
     export default {
         name: "resultTournament",
         components:{
-            Map,
-            Card
+            GoogleMap,
+            Card,
         },
         data() {
             return {
                 dataSearch: '',
                 result: [],
                 markers: [],
+                lastId: 0,
             }
         },
         methods: {
@@ -47,12 +48,14 @@
                     response.data.forEach(el => {
                         if (el.lattitude && el.longitude) {
                             let position = {
+                                id: this.lastId + 1,
                                 position: {
                                     lat: el.lattitude,
                                     lng: el.longitude
                                 }
                             };
                             this.markers.push(position);
+                            this.lastId += 1;
                         }
                     })
                 } catch (error) {
@@ -61,12 +64,20 @@
             },
         },
         mounted() {
-            if (this.$route.params) {
+            if (this.$route.params.name) {
                 this.dataSearch = this.$route.params.name;
-                this.search(this.$route.params.code, this.$route.params.activeReg );
+                this.search(this.$route.params.code, this.$route.params.activeReg);
+                localStorage.setItem('lastSearchName', this.$route.params.name);
+                localStorage.setItem('code', this.$route.params.code);
+                localStorage.setItem('activeReg', this.$route.params.activeReg);
+            }else if (localStorage.lastSearchName) {
+                this.dataSearch = localStorage.lastSearchName;
+                this.search(localStorage.code, localStorage.activeReg);
             } else {
+                console.log('test2');
                 this.$router.push('/search');
             }
+            console.log(this.markers)
 
         }
     }
