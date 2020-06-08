@@ -42,7 +42,6 @@
         },
         methods: {
             submitSearch() {
-                console.log(this.finalSearch);
                 this.$router.push({ name: 'resultTournament', params: this.finalSearch })
             },
             getDepartements: async function () {
@@ -87,7 +86,6 @@
                 } else {
                     this.finalSearch.activeReg = false;
                 }
-                console.log(this.activeReg);
             }
         },
         mounted() {

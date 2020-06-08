@@ -79,14 +79,13 @@
                 currentIdPlayer: 0
             }
         },
-        mounted() {
+        /*mounted() {
           console.log(store.state.userSession.id)
-        },
+        },*/
         methods: {
 
             addFile: function (file) {
                 this.file = file;
-                console.log(this.file)
             },
             createTeam: async function () {
                 try {
@@ -138,7 +137,6 @@
                         idPlayer: idPlayer,
                     };
                     const response = await this.$http.post(process.env.VUE_APP_API + '/requestTeam', {body: requestTeam})
-                    console.log(response);
                 }
 
                 catch(error) {
@@ -146,7 +144,6 @@
                 }
             },
             addEmailPlayer: function () {
-                console.log(this.currentIdPlayer);
                 this.currentIdPlayer = this.currentIdPlayer + 1;
 
                 let newPlayer = {
@@ -156,13 +153,10 @@
                 };
                 this.team.emailPlayer.push(newPlayer
                 )
-                console.log(this.team)
             },
             deleteEmailPlayer: function (id) {
-                console.log(id);
                 this.team.emailPlayer.splice(id, 1);
                 this.currentIdPlayer = this.currentIdPlayer - 1;
-                console.log(this.team.emailPlayer)
             }
 
         },

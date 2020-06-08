@@ -83,14 +83,10 @@
                         <h3 class="hind">Mes teams</h3>
                         <ul class="teams">
                             <li :key="team.id" v-for="team in currentUser.teams" @click="selectTeam(team._id)">
-                                <div class="containerInfoTournament">
-                                    <div class="containerImg" :style="{ backgroundImage:  'url(http://localhost:3000/'+ team.image+')'}">
-                                    </div>
-                                    <div class="infoTournament">
-                                        <h5>
-                                            {{team.name}}
-                                        </h5>
-                                    </div>
+                                <div class="infoTeam">
+                                    <h5>
+                                        {{team.name}}
+                                    </h5>
                                 </div>
                             </li>
                         </ul>
@@ -98,7 +94,14 @@
                 </section>
             </div>
         </div>
-        <modal :type="typeModal" @close-modal="closeModalTeam" :user="currentUser" :idTeam="idTeam" v-show="modalTeam"></modal>
+        <modal
+                :type="typeModal"
+                @close-modal="closeModalTeam"
+                :user="currentUser"
+                :idTeam="idTeam"
+                v-show="modalTeam"
+                @update-team="updateTeam"
+        ></modal>
 
     </div>
 </template>
@@ -126,15 +129,18 @@
                 this.modalTeam = true
             },
             closeModalTeam: function () {
-                this.modalTeam = false
+                this.modalTeam = false;
+                this.typeModal = '';
             },
             logout: function () {
                 store.dispatch('logout')
             },
             selectTeam: function(id) {
                 this.idTeam = id;
-                console.log(this.typeModal)
                 this.openModalTeam('modalTeam');
+            },
+            updateTeam: function (type) {
+                this.typeModal = type;
             },
             formatDate: function () {
                 this.currentUser = this.$store.state.userSession;
@@ -151,7 +157,6 @@
                             'Content-Type': 'application/x-www-form-urlencoded'
                         }
                     });
-                    console.log(response.data)
                     store.dispatch('populateUserSession', response.data);
                     this.formatDate();
                 } catch (error) {
@@ -231,9 +236,23 @@
                     .containerInfos {
                         width: 100%;
                         .teams {
+                            margin-top: 8px;
                             li {
-                                border: 3px solid #294FFF;
+                                .infoTeam {
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    h5 {
+                                        color: #FFFFFF;
+                                        margin: auto;
+                                        text-align: center;
+                                        text-transform: uppercase;
+                                    }
+                                }
+
+                                background-color: #294FFF;
                                 width: 20%;
+                                margin-right: 20px;
                                 height: 5vh;
                                 border-radius: 12px;
                                 transition: 0.5s;

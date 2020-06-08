@@ -74,10 +74,8 @@
                 this.dataSearch = localStorage.lastSearchName;
                 this.search(localStorage.code, localStorage.activeReg);
             } else {
-                console.log('test2');
                 this.$router.push('/search');
             }
-            console.log(this.markers)
 
         }
     }

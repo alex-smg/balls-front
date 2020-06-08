@@ -1,8 +1,9 @@
 <template>
     <div>
-        <p>{{team.id}}</p>
+        <p>{{team._id}}</p>
         <p>{{team.name}}</p>
         <p>{{team.description}}</p>
+        <button class="btn-primary" @click="updateTeam">Modifier</button>
     </div>
 </template>
 <script>
@@ -18,7 +19,10 @@
         },
         methods: {
             getTeam : function (id) {
-                this.team = this.$store.state.userSession.teams.find(team => team.id === id)
+                this.team = this.$store.state.userSession.teams.find(team => team._id === id)
+            },
+            updateTeam: function () {
+                this.$emit('update-team', 'modalCreateTeam');
             }
         },
         mounted() {

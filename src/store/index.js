@@ -41,7 +41,6 @@ const store = new Vuex.Store({
     },
     addTeamInUserSession(state, data) {
       state.userSession.teams.push(data);
-      console.log(state.userSession.teams)
     },
     deleteDataUserSession(state) {
       state.userSession = {}
@@ -53,7 +52,6 @@ const store = new Vuex.Store({
         password: credential.password
       }).then((response) => {
         /* eslint-disable */
-        console.log(response);
         if (response.data.isToken) {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('isToken', response.data.isToken);

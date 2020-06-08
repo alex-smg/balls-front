@@ -7,7 +7,7 @@
             </div>
             <modal-create-team v-if="type === 'modalCreateTeam'"></modal-create-team>
             <modal-chose-team :id-tournament="idTournament"  @update-tournament="updateTournament" v-if="type === 'modalChoseTeam'"></modal-chose-team>
-            <modal-team v-if="type === 'modalTeam'" :id-tournament="idTournament" :idTeam="idTeam"></modal-team>
+            <modal-team v-if="type === 'modalTeam'" @update-team="updateTeam" :id-tournament="idTournament" :idTeam="idTeam"></modal-team>
             <validation  v-if="type === 'validation'" @close-modal="$emit('close-modal')" @reset-teamcreated="resetTeamCreated"></validation>
         </div>
     </div>
@@ -26,14 +26,15 @@
         },
         methods : {
             close : function () {
-                console.log('test');
                 this.$emit('close-modal')
             },
             updateTournament: function(data) {
-                console.log(data);
                 this.$emit('update-tournament', data)
+            },
+            updateTeam: function (type) {
+                this.$emit('update-team', type)
             }
-        }
+        },
     }
 </script>
 <style lang="scss">

@@ -30,9 +30,7 @@
       },
     },
     mounted() {
-      console.log(this.$store.state.userSession);
       if (localStorage.isToken && this.$store.state.userSession.email === '') {
-        console.log('test P');
         this.getPerson(localStorage.idPerson);
       }
     }

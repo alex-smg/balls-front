@@ -32,8 +32,6 @@
         },
         mounted() {
             let id = JSON.stringify(localStorage.idPerson);
-            console.log(id);
-            console.log(typeof id);
             var channel = pusher.subscribe('notif');
             channel.bind(`${id}`, function(data) {
                 console.log(data);

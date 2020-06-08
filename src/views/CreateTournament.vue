@@ -264,7 +264,6 @@
                 try {
                     const response = await axios.get('https://geo.api.gouv.fr/regions?fields=nom,code');
                     this.regions = response.data;
-                    console.log(this.regions)
                 } catch (error) {
                     console.error(error);
                 }
@@ -272,7 +271,6 @@
 
             inputChange () {
                 this.viewReg = true;
-                console.log(this.data.level);
                 if(this.searchRegion.length > 1) {
                     console.log('test2');
                     this.suggestions = [];
@@ -288,7 +286,6 @@
             },
             selectValue (nom, codeRegion) {
                 this.suggestions= [];
-                console.log(nom);
                 this.viewReg = false;
                 this.searchRegion = nom;
                 this.data.addressRegion = nom;
@@ -326,7 +323,6 @@
 
                 try {
                     const response = await this.$http.post(process.env.VUE_APP_API + '/tournament', this.data);
-                    console.log(response);
                     response.status === 200 ? this.$router.push('/') : alert('probleme');
 
                 } catch (err) {

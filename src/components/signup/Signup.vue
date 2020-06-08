@@ -128,7 +128,6 @@
             },
             addFile: function (file) {
                 this.file = file;
-                console.log(this.file)
             },
             async sendFile() {
                 const formData = new FormData();
@@ -152,9 +151,6 @@
                 }
 
             },
-            uploadFile(event) {
-                console.log(event)
-            }
         }
 
     }
