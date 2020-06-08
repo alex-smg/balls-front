@@ -4,15 +4,14 @@
         <form @submit.prevent="sendFile" enctype="multipart/form-data">
             <h3>Créer une nouvelle team</h3>
             <input-text
-                    v-bind:title="team.name"
-                    v-on:update:title="team.name = $event"
+                    v-bind:title.sync="team.name"
                     label="Nom de la team"
                     placeholder="Nom de la team"
                     name="name"
                     id="name"
                     showLabel=false
             />
-            <input-text
+            <input-num
                 v-bind:title="team.nbrPlayer"
                 v-on:update:title="team.nbrPlayer = $event"
                 label="Nombre de joueur"
@@ -22,8 +21,7 @@
                 showLabel=false
             />
             <input-texta
-                    v-bind:title="team.description"
-                    v-on:update:title="team.description = $event"
+                    v-bind:title.sync="team.description"
                     label="Description"
                     name="description"
                     id="description"
@@ -32,8 +30,8 @@
             <File @add-file="addFile"/>
             <div class="formGroup">
                 <p class="addplayer">Ajouter des joueurs</p>
-                <div class="flex" v-for="email in team.emailPlayer" :key="email.id">
-                    <input class="inputText" type="text" v-model="team.emailPlayer[email.id].email"  name="player" placeholder="L'email du joueur que tu veux ajouter">
+                <div class="flex" v-for="email in emailPlayer" :key="email.id">
+                    <input class="inputText" type="text" v-model="emailPlayer[email.id].email"  name="player" placeholder="L'email du joueur que tu veux ajouter">
                     <button v-if="email.id > 0 " @click.prevent="deleteEmailPlayer(email.id)">X</button>
                 </div>
                 <button @click.prevent="addEmailPlayer" class="btn-secondary addEmail">+</button>
@@ -48,16 +46,19 @@
     import File from '../fields/File';
     import InputText from '../fields/InputText';
     import InputTexta from '../fields/Textarea';
+    import InputNum from '../fields/InputNum';
     export default {
         name: "modalCreateTeam",
         components: {
             File,
             InputText,
-            InputTexta
+            InputTexta,
+            InputNum
         },
+        props: ['update', 'teamUp'],
         data() {
             return{
-                update: false,
+                updateTeam: {},
                 modalTeam : false,
                 teamCreated: false,
                 file: [],
@@ -68,22 +69,18 @@
                     nbrPlayer: 0,
                     player_creator: localStorage.idPerson,
                     player_admin: localStorage.idPerson,
-                    emailPlayer: [
-                        {
-                            id: 0,
-                            email: '',
-                            idPlayer: ''
-                        }
-                    ],
                 },
+                emailPlayer: [
+                    {
+                        id: 0,
+                        email: '',
+                        idPlayer: ''
+                    }
+                ],
                 currentIdPlayer: 0
             }
         },
-        /*mounted() {
-          console.log(store.state.userSession.id)
-        },*/
         methods: {
-
             addFile: function (file) {
                 this.file = file;
             },
@@ -91,7 +88,7 @@
                 try {
                     const response = await this.$http.post(process.env.VUE_APP_API +'/team', this.team);
                     let idTeam = response.data;
-                    this.team.emailPlayer.forEach( async (player) => {
+                    this.emailPlayer.forEach( async (player) => {
                         const response = await this.$http.get(process.env.VUE_APP_API + '/person/search/email',
                             {
                                 params: {email: player.email },
@@ -151,11 +148,11 @@
                     email: '',
                     idPlayer: ''
                 };
-                this.team.emailPlayer.push(newPlayer
+                this.emailPlayer.push(newPlayer
                 )
             },
             deleteEmailPlayer: function (id) {
-                this.team.emailPlayer.splice(id, 1);
+                this.emailPlayer.splice(id, 1);
                 this.currentIdPlayer = this.currentIdPlayer - 1;
             }
 

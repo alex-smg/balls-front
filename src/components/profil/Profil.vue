@@ -95,12 +95,13 @@
             </div>
         </div>
         <modal
-                :type="typeModal"
-                @close-modal="closeModalTeam"
-                :user="currentUser"
-                :idTeam="idTeam"
-                v-show="modalTeam"
-                @update-team="updateTeam"
+            :type="typeModal"
+            @close-modal="closeModalTeam"
+            :user="currentUser"
+            :idTeam="idTeam"
+            v-show="modalTeam"
+            :update="update"
+            @update-team="updateTeam"
         ></modal>
 
     </div>
@@ -120,13 +121,15 @@
                 birth: '',
                 age: '',
                 idTeam: '',
-                typeModal: ''
+                typeModal: '',
+                update: false,
             }
         },
         methods: {
             openModalTeam: function (typemodal) {
                 this.typeModal = typemodal;
-                this.modalTeam = true
+                this.modalTeam = true;
+                this.update = false;
             },
             closeModalTeam: function () {
                 this.modalTeam = false;
@@ -141,6 +144,7 @@
             },
             updateTeam: function (type) {
                 this.typeModal = type;
+                this.update = true;
             },
             formatDate: function () {
                 this.currentUser = this.$store.state.userSession;

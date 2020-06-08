@@ -22,7 +22,7 @@
                 this.team = this.$store.state.userSession.teams.find(team => team._id === id)
             },
             updateTeam: function () {
-                this.$emit('update-team', 'modalCreateTeam');
+                this.$emit('update-team', 'modalCreateTeam', this.team);
             }
         },
         mounted() {

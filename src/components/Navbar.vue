@@ -11,6 +11,7 @@
                 <router-link to="/search" exact>Trouver un tournois</router-link>
                 <router-link  to="/create-tournament" exact>Créer un tournois</router-link>
                 <router-link  to="/profil" exact>Mon Profil</router-link>
+                <p>{{ message }}</p>
             </div>
         </div>
     </nav>
@@ -27,16 +28,19 @@
         name: "Navbar",
         data() {
             return {
-                messages: '',
+                message: '',
+            }
+        },
+        methods : {
+            newNotification: function (newMessage) {
+                console.log('test');
+                this.message = newMessage.message;
             }
         },
         mounted() {
             let id = JSON.stringify(localStorage.idPerson);
             var channel = pusher.subscribe('notif');
-            channel.bind(`${id}`, function(data) {
-                console.log(data);
-                this.messages = JSON.stringify(data);
-            });
+            channel.bind(`${id}`, this.newNotification);
         }
     }
 </script>

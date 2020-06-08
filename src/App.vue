@@ -84,10 +84,23 @@
       font-weight: 600;
       width: 100%;
     }
-    input[type=text], textarea, input[type=number] {
+    input[type=text], textarea, input[type=number] , input[type=number]{
       width: 100%;
       /*
       box-shadow: 0px 2px 15px #DFDDDD;*/
+      -moz-appearance: textfield;
+
+      /* Chrome */
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin:0;
+      }
+
+      /* Opéra*/
+      &::-o-inner-spin-button {
+        -o-appearance: none;
+        margin: 0;
+      }
       padding: 10px 20px;
       border-radius: 0.5em;
       border: 1px solid #DEDED7;
