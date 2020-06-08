@@ -10,6 +10,7 @@ import Home from '../views/Home'
 import FirstStepSearch from '../views/FirstStepSearch'
 import CreateTournament from "../views/CreateTournament";
 import Tournament from "../views/Tournament";
+import PageNotFound from "../views/PageNotFound";
 
 Vue.use(VueRouter);
 
@@ -57,6 +58,7 @@ const routes = [
       middleware: [auth, log],
       },
   },
+  { path: "*", component: PageNotFound }
 ];
 
 const router = new VueRouter({

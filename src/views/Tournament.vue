@@ -63,7 +63,7 @@
             <div>
                 <p>il reste de la place pour {{restTeam}} équipes</p>
                 <div>
-                    <button class="btn-secondary" @click="openModal('modalTeam')">Créer une team</button>
+                    <button class="btn-secondary" @click="openModal('modalCreateTeam')">Créer une team</button>
                     <button disabled="restTeam > 0" class="btn-primary" @click="openModal('modalChoseTeam')">Inscrire une team</button>
                 </div>
             </div>

@@ -36,10 +36,12 @@ const store = new Vuex.Store({
       state.userSession.firstname = data.firstname,
       state.userSession.lastname = data.lastname,
       state.userSession.teams = data.teams,
+      state.userSession.tournaments = data.tournaments,
       state.userSession.isToken = true
     },
     addTeamInUserSession(state, data) {
-      state.userSession.teams = [... data];
+      state.userSession.teams.push(data);
+      console.log(state.userSession.teams)
     },
     deleteDataUserSession(state) {
       state.userSession = {}
@@ -67,7 +69,7 @@ const store = new Vuex.Store({
       commit('pushDataUserSession', data);
     },
     addTeam({commit}, data) {
-      commit('addTeam', data)
+      commit('addTeamInUserSession', data)
     },
 
     logout({commit}) {

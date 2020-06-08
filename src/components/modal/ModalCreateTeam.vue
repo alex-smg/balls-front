@@ -44,21 +44,20 @@
 </template>
 
 <script>
-    import Validation from './Validation';
     import store from '../../store/index';
     import File from '../fields/File';
     import InputText from '../fields/InputText';
     import InputTexta from '../fields/Textarea';
     export default {
-        name: "modalTeam",
+        name: "modalCreateTeam",
         components: {
-            Validation,
             File,
             InputText,
             InputTexta
         },
         data() {
             return{
+                update: false,
                 modalTeam : false,
                 teamCreated: false,
                 file: [],

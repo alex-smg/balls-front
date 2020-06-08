@@ -53,11 +53,11 @@
                 <label for="postPlayer">
                     Poste
                     <select class="inputSelect"  v-model="data.postPlayer" name="postPlayer">
-                        <option value="R4">Receptionneur Attaquant</option>
-                        <option value="central">Central</option>
-                        <option value="pointu">Pointu</option>
-                        <option value="passeur">Passeur</option>
-                        <option value="libero">Libéro</option>
+                        <option value="Réceptionneur Attaquant">Receptionneur Attaquant</option>
+                        <option value="Central">Central</option>
+                        <option value="Pointu">Pointu</option>
+                        <option value="Passeur">Passeur</option>
+                        <option value="Libéro">Libéro</option>
                     </select>
                 </label>
             </div>
@@ -65,15 +65,15 @@
                 <label for="level">
                     Niveau
                     <select class="inputSelect"  v-model="data.level" name="level">
-                        <option value="loisir">Loisir</option>
-                        <option value="dep">Départemental</option>
-                        <option value="reg">Régional</option>
-                        <option value="preNat">Pré-Nationale</option>
-                        <option value="N3">National 3</option>
-                        <option value="N2">National 2</option>
-                        <option value="N1">National 1</option>
-                        <option value="proB">Pro B</option>
-                        <option value="proA">Pro A</option>
+                        <option value="Loisir">Loisir</option>
+                        <option value="Départemental">Départemental</option>
+                        <option value="Régional">Régional</option>
+                        <option value="Pré-Nationale">Pré-Nationale</option>
+                        <option value="National 3">National 3</option>
+                        <option value="National 2">National 2</option>
+                        <option value="National 1">National 1</option>
+                        <option value="Pro B">Pro B</option>
+                        <option value="Pro B">Pro A</option>
                     </select>
                 </label>
             </div>
