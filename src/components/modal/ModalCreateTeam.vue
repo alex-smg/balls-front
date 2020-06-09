@@ -87,7 +87,7 @@
             createTeam: async function () {
                 try {
                     const response = await this.$http.post(process.env.VUE_APP_API +'/team', this.team);
-                    let idTeam = response.data;
+                    let idTeam = response.data._id;
                     this.emailPlayer.forEach( async (player) => {
                         const response = await this.$http.get(process.env.VUE_APP_API + '/person/search/email',
                             {
@@ -133,7 +133,7 @@
                         idApplicant: localStorage.idPerson,
                         idPlayer: idPlayer,
                     };
-                    const response = await this.$http.post(process.env.VUE_APP_API + '/requestTeam', {body: requestTeam})
+                    const response = await this.$http.post(process.env.VUE_APP_API + '/requestTeam', requestTeam)
                 }
 
                 catch(error) {

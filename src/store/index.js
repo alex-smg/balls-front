@@ -20,6 +20,8 @@ const store = new Vuex.Store({
       firstname: '',
       lastname: '',
       isToken: false,
+    },
+    request: {
     }
   },
   mutations: {
@@ -44,6 +46,9 @@ const store = new Vuex.Store({
     },
     deleteDataUserSession(state) {
       state.userSession = {}
+    },
+    populateRequest(state, data) {
+      state.request = data
     }
   }, actions: {
     login({commit}, credential) {
@@ -65,6 +70,9 @@ const store = new Vuex.Store({
     },
     populateUserSession({commit}, data) {
       commit('pushDataUserSession', data);
+    },
+    populateRequest({commit}, data) {
+      commit('populateRequest', data);
     },
     addTeam({commit}, data) {
       commit('addTeamInUserSession', data)

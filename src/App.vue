@@ -26,12 +26,24 @@
         } catch (error) {
           console.log(error)
         }
-
+      },
+      getRequest: async function (id) {
+        try {
+          const response = await this.$http.get(process.env.VUE_APP_API +`/requestTeam/search/player/${id}`, {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          });
+          this.$store.dispatch('populateRequest', response.data);
+        } catch (error) {
+          console.log(error)
+        }
       },
     },
     mounted() {
       if (localStorage.isToken && this.$store.state.userSession.email === '') {
         this.getPerson(localStorage.idPerson);
+        this.getRequest()
       }
     }
   }
@@ -43,7 +55,6 @@
     margin: 0;
     outline: none;
     box-sizing: border-box;
-
   }
 
   h1, h2, h3, h4, h5, p, a, input, label, span, textarea {
