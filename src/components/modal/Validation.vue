@@ -4,7 +4,7 @@
            <img src="../../assets/validation.svg">
        </div>
         <div>
-            <p>Bien joué ta team a été créée</p>
+            <p>{{message}}</p>
         </div>
         <div>
             <button class="btn-primary" @click.prevent="close()">Fermer</button>
@@ -15,6 +15,7 @@
 <script>
     export default {
         name: "validation",
+        props: ['message'],
         data() {
             return{
             }

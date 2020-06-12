@@ -22,7 +22,8 @@ const store = new Vuex.Store({
       isToken: false,
     },
     request: {
-    }
+    },
+    count : 0
   },
   mutations: {
     pushDataUserSession(state, data) {
@@ -44,11 +45,29 @@ const store = new Vuex.Store({
     addTeamInUserSession(state, data) {
       state.userSession.teams.push(data);
     },
+    addCount(state) {
+      state.count += 1;
+    },
+    lowCount(state) {
+      state.count -= 1;
+    },
     deleteDataUserSession(state) {
       state.userSession = {}
     },
+    deleteTeam(state, id) {
+      const team = state.userSession.teams.find(team => team._id === id)
+      const index = state.userSession.teams.indexOf(team);
+      state.userSession.teams.splice(index, 1);
+    },
     populateRequest(state, data) {
-      state.request = data
+      state.request = data;
+      state.count = data.length
+    },
+    addRequest(state, data) {
+      state.request.push(data);
+    },
+    deleteRequest(state, index) {
+      state.request.splice(index, 1)
     }
   }, actions: {
     login({commit}, credential) {
@@ -76,6 +95,21 @@ const store = new Vuex.Store({
     },
     addTeam({commit}, data) {
       commit('addTeamInUserSession', data)
+    },
+    deleteTeam({commit}, id) {
+      commit('addTeamInUserSession', id)
+    },
+    addCount({commit}) {
+      commit('addCount')
+    },
+    lowCount({commit}) {
+      commit('lowCount')
+    },
+    addRequest({commit}, data) {
+      commit('addRequest', data)
+    },
+    deleteRequest({commit}, index) {
+      commit('deleteRequest', index)
     },
 
     logout({commit}) {

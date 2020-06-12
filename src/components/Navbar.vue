@@ -11,6 +11,7 @@
                 <router-link to="/search" exact>Trouver un tournois</router-link>
                 <router-link  to="/create-tournament" exact>Créer un tournois</router-link>
                 <router-link  to="/profil" id="profil" exact>
+                    <div v-if="$store.state.count > 0" class="notif">{{$store.state.count}}</div>
                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                          viewBox="0 0 478 478" style="enable-background:new 0 0 478 478;" xml:space="preserve">
                                 <g>
@@ -39,7 +40,19 @@
                             </g>
                         </svg>
                     <ul>
-                        <li :key="request.id" v-for="request in $store.state.request"> {{request}}</li>
+                        <li :key="request._id" v-for="request in $store.state.request">
+                            <div>
+                                <p> <b>{{ request.idApplicant.firstname + ' ' + request.idApplicant.lastname }}</b>  souhaite vous inviter dans la team <b>{{ request.idTeam.name}}</b></p>
+                                <div class="containerBtn">
+                                    <button  @click="acceptRequest(request.idTeam._id, request.idPlayer, $store.state.request.indexOf(request), request._id)">
+                                        <img src="../assets/good.svg" />
+                                    </button>
+                                    <button @click="deleteRequest(request._id,  $store.state.request.indexOf(request))">
+                                        <img src="../assets/close.svg" />
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </router-link>
             </div>
@@ -58,19 +71,42 @@
         name: "Navbar",
         data() {
             return {
-                message: '',
             }
         },
         methods : {
-            newNotification: function (newMessage) {
-                console.log('test');
-                this.message = newMessage.message;
-            }
+            newNotification: function (data) {
+                console.log(data);
+                this.$store.dispatch('addCount');
+                this.$store.dispatch('addRequest', data.requestTeam);
+            },
+            acceptRequest: async function(idTeam, idPlayer, index, idRequest) {
+                const body = {
+                    id: idTeam,
+                    idPlayer: idPlayer
+                };
+                try {
+                    const response = await this.$http.patch(process.env.VUE_APP_API + '/team/acceptRequest', body);
+                    this.deleteRequest(idRequest, index);
+                }catch (e) {
+                    console.log(e)
+                }
+            },
+            deleteRequest: async function(idRequest, index) {
+                try {
+                    const response = await this.$http.delete(process.env.VUE_APP_API + `/requestTeam/${idRequest}`);
+                    this.$store.dispatch('deleteRequest', index)
+                    this.$store.dispatch('lowCount');
+                }catch (e) {
+                    console.log(e)
+                }
+            },
         },
         mounted() {
             let id = JSON.stringify(localStorage.idPerson);
             var channel = pusher.subscribe('notif');
             channel.bind(`${id}`, this.newNotification);
+            this.count = this.$store.state.request.length;
+            console.log(this.count)
         }
     }
 </script>
@@ -108,6 +144,16 @@
                 #profil {
                     width: 12%;
                     position: relative;
+                    .notif {
+                        position: absolute;
+                        background-color: #DB4437;
+                        color: #FFFFFF;
+                        padding: 5px 12px;
+                        border-radius: 100%;
+                        font-size: 12px;
+                        right: 0;
+                        bottom: -10px;
+                    }
                     svg {
                         width: 50%;
                         margin: auto;
@@ -119,14 +165,43 @@
                     }
                     &:hover ul {
                         visibility: visible;
+                        opacity: 1;
                     }
                     &:hover svg {
                         .st0{fill:#294FFF;}
                     }
                     ul {
-                        background-color: red;
                         visibility: hidden;
+                        opacity: 0;
+                        transition: visibility 0s, opacity 0.5s linear;
                         position: absolute;
+                        width: min-content;
+                        right: 0;
+                        border: 3px solid #FFCA28;
+                        border-radius: 20px;
+                        padding: 8px;
+                        background-color: #FFFFFF;
+                        li {
+                            list-style: none;
+                            padding: 5px;
+                            margin: 10px 0px;
+                            .containerBtn {
+                                width: 15%;
+                                display:flex;
+                                justify-content: space-between;
+                                button {
+                                    border: none;
+                                    background-color: transparent;
+                                    width: 45%;
+                                    img {
+                                        width: 100%;
+                                    }
+                                }
+                            }
+                            p {
+                                white-space: nowrap;
+                            }
+                        }
                     }
                 }
 

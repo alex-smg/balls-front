@@ -43,7 +43,7 @@
     mounted() {
       if (localStorage.isToken && this.$store.state.userSession.email === '') {
         this.getPerson(localStorage.idPerson);
-        this.getRequest()
+        this.getRequest(localStorage.idPerson)
       }
     }
   }

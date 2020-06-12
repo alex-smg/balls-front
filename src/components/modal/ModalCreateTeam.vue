@@ -134,6 +134,8 @@
                         idPlayer: idPlayer,
                     };
                     const response = await this.$http.post(process.env.VUE_APP_API + '/requestTeam', requestTeam)
+                    console.log('ici');
+                    this.$emit('validation-team')
                 }
 
                 catch(error) {

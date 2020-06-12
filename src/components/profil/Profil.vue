@@ -102,6 +102,8 @@
             v-show="modalTeam"
             :update="update"
             @update-team="updateTeam"
+            @validation-team="validationTeam"
+            :message="message"
         ></modal>
 
     </div>
@@ -123,6 +125,7 @@
                 idTeam: '',
                 typeModal: '',
                 update: false,
+                message: ''
             }
         },
         methods: {
@@ -145,6 +148,11 @@
             updateTeam: function (type) {
                 this.typeModal = type;
                 this.update = true;
+            },
+            validationTeam: function () {
+                console.log('hello');
+                this.typeModal = 'validation';
+                this.message = 'Ta team a été créée'
             },
             formatDate: function () {
                 this.currentUser = this.$store.state.userSession;
@@ -242,6 +250,7 @@
                         .teams {
                             margin-top: 8px;
                             li {
+                                margin: 5px;
                                 .infoTeam {
                                     width: 100%;
                                     height: 100%;

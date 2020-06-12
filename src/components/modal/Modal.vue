@@ -5,10 +5,10 @@
             <div class="header flex hind">
                 <button @click="close">X</button>
             </div>
-            <modal-create-team v-if="type === 'modalCreateTeam'" :update="update" :teamUp="team"></modal-create-team>
+            <modal-create-team v-if="type === 'modalCreateTeam'" @validation-team="validationTeam" :update="update" :teamUp="team"></modal-create-team>
             <modal-chose-team :id-tournament="idTournament"  @update-tournament="updateTournament" v-if="type === 'modalChoseTeam'"></modal-chose-team>
-            <modal-team v-if="type === 'modalTeam'" @update-team="updateTeam" :id-tournament="idTournament" :idTeam="idTeam"></modal-team>
-            <validation  v-if="type === 'validation'" @close-modal="$emit('close-modal')" @reset-teamcreated="resetTeamCreated"></validation>
+            <modal-team v-if="type === 'modalTeam'" @update-team="updateTeam" @close-modal="close" :id-tournament="idTournament" :idTeam="idTeam"></modal-team>
+            <validation  v-if="type === 'validation'" :message="message" @close-modal="close" @reset-teamcreated="resetTeamCreated"></validation>
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@
     export default {
         name: "modal",
         components: {Validation, ModalChoseTeam, ModalCreateTeam, ModalTeam},
-        props: ['type', 'idTournament', 'idTeam', 'update'],
+        props: ['type', 'idTournament', 'idTeam', 'update', 'message'],
         data() {
             return {
                 team: {},
@@ -36,6 +36,10 @@
             updateTeam: function (type, team) {
                 this.team = team;
                 this.$emit('update-team', type)
+            },
+            validationTeam: function () {
+                console.log('la');
+                this.$emit('validation-team')
             }
         },
     }
